@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 轉富文本預覽器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body class="bg-gray-50 h-screen flex flex-col font-sans text-gray-800">
+
+    <!-- 頂部導覽列 -->
+    <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shrink-0 shadow-sm">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h1 class="text-xl font-bold tracking-tight">Markdown Editor</h1>
+        </div>
+        <div class="flex gap-3">
+            <button id="clear-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">
+                清空內容
+            </button>
+            <button id="copy-btn" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-all shadow-md active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                複製富文本
+            </button>
+        </div>
+    </header>
+
+    <!-- 主要工作區 -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden p-4 gap-4">
+        
+        <!-- 輸入區 -->
+        <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Markdown 輸入區
+            </div>
+            <textarea id="markdown-input" 
+                class="flex-1 p-6 focus:outline-none resize-none font-mono text-sm leading-relaxed" 
+                placeholder="在此輸入或貼上 Markdown 內容..."></textarea>
+        </div>
+
+        <!-- 預覽區 -->
+        <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                即時預覽 (Rich Text)
+            </div>
+            <div id="preview-area" class="flex-1 p-6 overflow-y-auto bg-white prose-sm max-w-none">
+                <!-- 解析後的 HTML 會放在這裡 -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 訊息提示盒 -->
+    <div id="message-box" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 transition-opacity pointer-events-none z-50">
+        已複製到剪貼簿！
+    </div>
+
+    <script src="scripts/script.js"></script>
+</body>
+</html>
