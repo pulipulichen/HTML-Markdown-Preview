@@ -1,0 +1,16 @@
+{
+  "name": "Markdown 轉富文本預覽器",
+  "short_name": "MD Preview",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#2563eb",
+  "description": "A tool for real-time conversion and visualization of Markdown syntax into HTML preview.",
+  "icons": [
+    {
+      "src": "assets/favicon/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

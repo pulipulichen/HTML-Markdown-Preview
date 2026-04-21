@@ -1,0 +1,22 @@
+{
+  "name": "html-markdown-preview",
+  "version": "1.0.0",
+  "description": "A tool for real-time conversion and visualization of Markdown syntax into HTML preview.",
+  "main": "sw.js",
+  "scripts": {
+    "start": "sudo docker compose up --build --exit-code-from test-runner"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pulipulichen/HTML-Markdown-Preview.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pulipulichen/HTML-Markdown-Preview/issues"
+  },
+  "homepage": "https://github.com/pulipulichen/HTML-Markdown-Preview#readme",
+  "devDependencies": {
+  }
+}
