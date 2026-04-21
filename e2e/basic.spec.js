@@ -1,40 +1,40 @@
 import { test, expect } from '@playwright/test';
 
-// test('應該能夠正確渲染 Markdown 並清空內容', async ({ page }) => {
-//   // 1. 導航到應用程式
-//   await page.goto('/');
+test('應該能夠正確渲染 Markdown 並清空內容', async ({ page }) => {
+  // 1. 導航到應用程式
+  await page.goto('/');
 
-//   // 2. 設定控制台錯誤追蹤
-//   const consoleErrors = [];
-//   page.on('console', msg => {
-//     if (msg.type() === 'error') {
-//       consoleErrors.push(msg.text());
-//     }
-//   });
+  // 2. 設定控制台錯誤追蹤
+  const consoleErrors = [];
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      consoleErrors.push(msg.text());
+    }
+  });
 
-//   // 3. 檢查初始狀態
-//   const input = page.locator('#markdown-input');
-//   const preview = page.locator('#preview-area');
+  // 3. 檢查初始狀態
+  const input = page.locator('#markdown-input');
+  const preview = page.locator('#preview-area');
   
-//   // 等待內容載入（如果有預設內容）
-//   await page.waitForLoadState('networkidle');
+  // 等待內容載入（如果有預設內容）
+  await page.waitForLoadState('networkidle');
 
-//   // 4. 輸入 Markdown
-//   const testMarkdown = '# Hello World\n\n這是一個測試。';
-//   await input.fill(testMarkdown);
+  // 4. 輸入 Markdown
+  const testMarkdown = '# Hello World\n\n這是一個測試。';
+  await input.fill(testMarkdown);
 
-//   // 5. 驗證預覽區域
-//   await expect(preview.locator('h1')).toHaveText('Hello World');
-//   await expect(preview.locator('p')).toHaveText('這是一個測試。');
+  // 5. 驗證預覽區域
+  await expect(preview.locator('h1')).toHaveText('Hello World');
+  await expect(preview.locator('p')).toHaveText('這是一個測試。');
 
-//   // 6. 測試清空按鈕
-//   await page.locator('#clear-btn').click();
-//   await expect(input).toHaveValue('');
-//   await expect(preview).toHaveText('');
+  // // 6. 測試清空按鈕
+  // await page.locator('#clear-btn').click();
+  // await expect(input).toHaveValue('');
+  // await expect(preview).toHaveText('');
 
-//   // 7. 最後檢查控制台有無錯誤
-//   expect(consoleErrors).toHaveLength(0);
-// });
+  // 7. 最後檢查控制台有無錯誤
+  expect(consoleErrors).toHaveLength(0);
+});
 
 // test('複製按鈕應該能觸發提示訊息', async ({ page }) => {
 //   await page.goto('/');
