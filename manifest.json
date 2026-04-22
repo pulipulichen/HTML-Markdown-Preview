@@ -1,6 +1,6 @@
 {
-  "name": "Markdown 轉富文本預覽器",
-  "short_name": "MD Preview",
+  "name": "Markdown to Rich Text",
+  "short_name": "MD2RText",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f9fafb",
