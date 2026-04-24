@@ -1,0 +1,26 @@
+#preview-area table {
+    padding: 0;
+    margin: 0;
+    padding-top: 0px;
+}
+
+#preview-area table th {
+    border-color: black;
+}
+
+#preview-area table td {
+    border-color: black;
+    padding-top: 6px;
+}
+
+#preview-area table td pre {
+    margin: 0;
+    background-color: initial;
+    padding: 0;
+    padding-top: 0px;
+}
+
+#preview-area p code {
+    font-weight: bold;
+    background-color: #DDD;
+}

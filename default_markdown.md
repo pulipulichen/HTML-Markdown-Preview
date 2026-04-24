@@ -14,6 +14,21 @@
 - 在右側即時查看結果
 - 點擊「複製富文本」按鈕
 
+## 伺服器環境準備
+本系統建議部署於安裝 `Ubuntu 22.04 LTS` 的伺服器環境中。選擇此作業系統版本，可有效避免安裝 Docker 時遭遇 AppArmor 安全性機制的阻擋。建議使用 PVE 的 CT 容器來建立此伺服器環境。
+
+## 安裝 Docker 環境
+透過 SSH 連線至伺服器後，請執行以下安裝指令，以自動下載並安裝 Docker。
+
+<table>
+<tr>
+<td><pre>sudo apt install -y nano wget curl
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo rm -f get-docker.sh</pre></td>
+</tr>
+</table>
+
 ## 範例表格
 | 功能 | 支援 | 備註 |
 | :--- | :---: | :--- |

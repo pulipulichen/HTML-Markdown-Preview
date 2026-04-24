@@ -13,8 +13,9 @@ window.onload = async () => {
         // 從外部檔案讀取預設內容
         try {
             const response = await fetch('default_markdown.md');
-            const defaultContent = await response.text();
-            markdownInput.value = defaultContent.trim();
+            let defaultContent = await response.text();
+            defaultContent = defaultContent.trim();
+            markdownInput.value = defaultContent;
         } catch (err) {
             console.error('無法讀取預設內容:', err);
             markdownInput.value = "# Markdown Editor";
@@ -30,7 +31,10 @@ markdownInput.addEventListener('input', () => {
 });
 
 function updatePreview() {
-    const rawValue = markdownInput.value;
+    let rawValue = markdownInput.value;
+    rawValue = filterMarkdown(rawValue)
+
+    
     // 使用 marked.js 轉換
     previewArea.innerHTML = marked.parse(rawValue);
 }
