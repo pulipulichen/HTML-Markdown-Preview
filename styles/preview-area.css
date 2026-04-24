@@ -15,9 +15,11 @@
     padding-bottom: 0.3em;
  }
 #preview-area h2 { 
-    font-size: 18pt; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em;
+    font-size: 18pt; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; 
+    /* border-bottom: 1px solid #eaecef;  */
+    padding-bottom: 0.3em;
     padding-bottom: .3em;
-    border-bottom: 1px solid #eaecef;
+    /* border-bottom: 1px solid #eaecef; */
 }
 #preview-area h3 { font-size: 16pt; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
 #preview-area p { 
