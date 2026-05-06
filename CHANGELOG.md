@@ -3,4 +3,5 @@
 - 新增「貼上富文本」按鈕，可讀取剪貼簿中的 HTML 富文本，轉換成 Markdown 後放入輸入區並更新預覽。
 - 強化富文本表格轉換，能將一般 HTML 表格轉成 GFM Markdown 表格，並處理換行、欄位補齊與 `|` 字元跳脫。
 - 若表格含有 `rowspan` 或 `colspan` 等 Markdown 無法表達的合併儲存格，會保留原始 HTML 表格以維持預覽效果。
+- 轉換後的 HTML 表格會補上 `border`、`bgcolor`、`align`、`font` 等相容 Word 的舊式 HTML 屬性，讓複製貼上後保留類似 Word 的表格樣式。
 - 將前端腳本依功能拆分為多個檔案，降低 `scripts/script.js` 的長度，方便後續閱讀與維護。

@@ -3,4 +3,5 @@ function updatePreview(markdownInput, previewArea) {
     rawValue = filterMarkdown(rawValue);
 
     previewArea.innerHTML = marked.parse(rawValue);
+    applyWordTableStyles(previewArea);
 }
