@@ -18,6 +18,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+    <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+    <script src="https://unpkg.com/turndown-plugin-gfm/dist/turndown-plugin-gfm.js"></script>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/preview-area.css">
     <link rel="stylesheet" href="styles/code.css">
@@ -35,6 +37,12 @@
         <div class="flex gap-3">
             <button id="clear-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">
                 清空內容
+            </button>
+            <button id="paste-rich-btn" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-medium transition-all shadow-md active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2m-4 0a2 2 0 002 2h2a2 2 0 002-2m-4 0a2 2 0 012-2h0a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                貼上富文本
             </button>
             <button id="copy-btn" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-all shadow-md active:scale-95">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,6 +84,11 @@
     </div>
 
     <script src="scripts/filter.js"></script>
+    <script src="scripts/rich-text-to-markdown.js"></script>
+    <script src="scripts/clipboard.js"></script>
+    <script src="scripts/preview.js"></script>
+    <script src="scripts/toast.js"></script>
+    <script src="scripts/copy-rich-text.js"></script>
     <script src="scripts/script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
