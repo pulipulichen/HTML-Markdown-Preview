@@ -10,6 +10,8 @@ function filterMarkdown(markdown) {
         markdown = markdown.slice(needle_start, needle_end)
     }
 
+    // @TODO 如果有一行只有多個 = 符號，則把該行刪除
+    markdown = markdown.replace(/^={2,}\r?\n?/gm, '')
 
     markdown = markdown.replaceAll('</table>\n', '</table><br />\n')
 
