@@ -71,7 +71,12 @@ async function pasteRichTextAsMarkdown() {
         markdownInput.value = markdown.trim();
         updateEditorPreview();
         localStorage.setItem('markdown_content', markdownInput.value);
-        showEditorToast("富文本已轉成 Markdown！");
+
+        if (copyRichText(previewArea)) {
+            showEditorToast("富文本已轉成 Markdown 並複製！");
+        } else {
+            showEditorToast("富文本已轉成 Markdown，但複製失敗。");
+        }
     } catch (err) {
         console.error('無法讀取剪貼簿:', err);
         showEditorToast("無法讀取剪貼簿，請確認瀏覽器權限。");
