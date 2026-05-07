@@ -13,6 +13,10 @@ function filterMarkdown(markdown) {
     // @TODO 如果有一行只有多個 = 符號，則把該行刪除
     markdown = markdown.replace(/^={2,}\r?\n?/gm, '')
 
+    markdown = markdown.replace(/\s*\[\d+(?:,\s*\d+)*\](?=。)/g, '')
+
+    markdown = markdown.replace(/^\s*\[!NOTE\]\s*(.*)$/gm, '\n<table><tr><td bgcolor="yellow">[!NOTE] $1</td></tr></table>\n')
+
     markdown = markdown.replaceAll('</table>\n', '</table><br />\n')
 
     markdown = markdown.replaceAll('\n</pre>', '</pre>')
