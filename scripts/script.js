@@ -4,9 +4,12 @@ const copyBtn = document.getElementById('copy-btn');
 const pasteRichBtn = document.getElementById('paste-rich-btn');
 const clearBtn = document.getElementById('clear-btn');
 const messageBox = document.getElementById('message-box');
+const topHeadingLevelSelect = document.getElementById('top-heading-level');
+const TOP_HEADING_LEVEL_KEY = 'top_heading_level';
 
 // 初始化：從 LocalStorage 讀取
 window.onload = async () => {
+    loadTopHeadingLevel();
     await loadInitialContent();
     updateEditorPreview();
 };
@@ -15,6 +18,11 @@ window.onload = async () => {
 markdownInput.addEventListener('input', () => {
     updateEditorPreview();
     localStorage.setItem('markdown_content', markdownInput.value);
+});
+
+topHeadingLevelSelect.addEventListener('change', () => {
+    updateEditorPreview();
+    localStorage.setItem(TOP_HEADING_LEVEL_KEY, topHeadingLevelSelect.value);
 });
 
 // 貼上富文本並轉成 Markdown
@@ -58,6 +66,13 @@ async function loadInitialContent() {
     }
 }
 
+function loadTopHeadingLevel() {
+    const savedTopHeadingLevel = localStorage.getItem(TOP_HEADING_LEVEL_KEY);
+    if (savedTopHeadingLevel) {
+        topHeadingLevelSelect.value = savedTopHeadingLevel;
+    }
+}
+
 async function pasteRichTextAsMarkdown() {
     try {
         const clipboardContent = await readClipboardContent();
@@ -84,7 +99,7 @@ async function pasteRichTextAsMarkdown() {
 }
 
 function updateEditorPreview() {
-    updatePreview(markdownInput, previewArea);
+    updatePreview(markdownInput, previewArea, topHeadingLevelSelect.value);
 }
 
 function showEditorToast(msg) {

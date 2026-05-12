@@ -24,7 +24,7 @@ test('應該能夠正確渲染 Markdown 並清空內容', async ({ page }) => {
   await input.fill(testMarkdown);
 
   // 5. 驗證預覽區域
-  await expect(preview.locator('h1')).toHaveText('Hello World');
+  await expect(preview.locator('h2')).toHaveText('Hello World');
   await expect(preview.locator('p')).toHaveText('這是一個測試。');
 
   // // 6. 測試清空按鈕
@@ -35,6 +35,7 @@ test('應該能夠正確渲染 Markdown 並清空內容', async ({ page }) => {
   // 7. 最後檢查控制台有無錯誤
   expect(consoleErrors).toHaveLength(0);
 });
+
 
 // test('複製按鈕應該能觸發提示訊息', async ({ page }) => {
 //   await page.goto('/');
@@ -55,4 +56,31 @@ test('PWA manifest 已連結', async ({ page }) => {
   await page.goto('/');
   const manifest = page.locator('link[rel="manifest"]');
   await expect(manifest).toHaveAttribute('href', 'manifest.json');
+});
+
+test('Markdown 標題最高層級應該從 h2 開始', async ({ page }) => {
+  await page.goto('/');
+  const input = page.locator('#markdown-input');
+  const preview = page.locator('#preview-area');
+  const topHeadingLevel = page.locator('#top-heading-level');
+
+  await input.fill('# 主標題\n\n### 小節\n\n###### 最深層');
+
+  await expect(topHeadingLevel).toHaveValue('2');
+  await expect(preview.locator('h1')).toHaveCount(0);
+  await expect(preview.locator('h2')).toHaveText('主標題');
+  await expect(preview.locator('h4')).toHaveText('小節');
+  await expect(preview.locator('h6')).toHaveText('最深層');
+});
+
+test('可調整 Markdown 標題最高層級', async ({ page }) => {
+  await page.goto('/');
+  const input = page.locator('#markdown-input');
+  const preview = page.locator('#preview-area');
+
+  await input.fill('# 主標題\n\n## 子標題');
+  await page.locator('#top-heading-level').selectOption('3');
+
+  await expect(preview.locator('h3')).toHaveText('主標題');
+  await expect(preview.locator('h4')).toHaveText('子標題');
 });
