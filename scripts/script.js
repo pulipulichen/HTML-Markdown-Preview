@@ -3,6 +3,7 @@ const previewArea = document.getElementById('preview-area');
 const copyBtn = document.getElementById('copy-btn');
 const pasteRichBtn = document.getElementById('paste-rich-btn');
 const clearBtn = document.getElementById('clear-btn');
+const removeEmptyLinesBtn = document.getElementById('remove-empty-lines-btn');
 const messageBox = document.getElementById('message-box');
 const topHeadingLevelSelect = document.getElementById('top-heading-level');
 const TOP_HEADING_LEVEL_KEY = 'top_heading_level';
@@ -46,6 +47,22 @@ clearBtn.addEventListener('click', () => {
         updateEditorPreview();
         localStorage.removeItem('markdown_content');
     }
+});
+
+// 刪除空行功能
+removeEmptyLinesBtn.addEventListener('click', () => {
+    const lines = markdownInput.value.split('\n');
+    const compacted = lines.filter(line => line.trim() !== '').join('\n');
+
+    if (compacted === markdownInput.value) {
+        showEditorToast("沒有可刪除的空行。");
+        return;
+    }
+
+    markdownInput.value = compacted;
+    updateEditorPreview();
+    localStorage.setItem('markdown_content', markdownInput.value);
+    showEditorToast("已刪除空行。");
 });
 
 async function loadInitialContent() {
