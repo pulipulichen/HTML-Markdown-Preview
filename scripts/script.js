@@ -9,14 +9,18 @@ const removeEmptyLinesBtn = document.getElementById("remove-empty-lines-btn");
 const messageBox = document.getElementById("message-box");
 const topHeadingLevelSelect = document.getElementById("top-heading-level");
 const pasteModeSelect = document.getElementById("paste-mode");
+const tableStyleSelect = document.getElementById("table-style");
 const TOP_HEADING_LEVEL_KEY = "top_heading_level";
 const PASTE_MODE_KEY = "paste_mode";
+const TABLE_STYLE_KEY = "table_style";
 const MARKDOWN_CONTENT_KEY = "markdown_content";
+const VALID_TABLE_STYLES = ["gray", "blue", "yellow", "red", "green", "purple", "brown"];
 
 // 初始化：從 LocalStorage 讀取
 window.addEventListener("load", async () => {
     loadTopHeadingLevel();
     loadPasteMode();
+    loadTableStyle();
     await loadInitialContent();
     updateEditorPreview();
     refreshLocalizedRuntimeText();
@@ -35,6 +39,15 @@ topHeadingLevelSelect.addEventListener("change", () => {
 
 pasteModeSelect.addEventListener("change", () => {
     localStorage.setItem(PASTE_MODE_KEY, pasteModeSelect.value);
+});
+
+tableStyleSelect.addEventListener("change", () => {
+    const tableStyle = tableStyleSelect.value;
+    if (typeof window.setTableStyleTheme === "function") {
+        window.setTableStyleTheme(tableStyle);
+    }
+    updateEditorPreview();
+    localStorage.setItem(TABLE_STYLE_KEY, tableStyle);
 });
 
 // 貼上富文本並轉成 Markdown
@@ -107,6 +120,16 @@ function loadPasteMode() {
 
     if (savedPasteMode && validModes.includes(savedPasteMode)) {
         pasteModeSelect.value = savedPasteMode;
+    }
+}
+
+function loadTableStyle() {
+    const savedTableStyle = localStorage.getItem(TABLE_STYLE_KEY);
+    const tableStyle = VALID_TABLE_STYLES.includes(savedTableStyle) ? savedTableStyle : "gray";
+    tableStyleSelect.value = tableStyle;
+
+    if (typeof window.setTableStyleTheme === "function") {
+        window.setTableStyleTheme(tableStyle);
     }
 }
 

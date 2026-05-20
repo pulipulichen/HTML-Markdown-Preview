@@ -8,6 +8,9 @@
 - Replaced static text in `index.html` with `data-i18n` / `data-i18n-attr` bindings, including titles, buttons, panel headers, placeholders, meta description, and default toast text.
 - Added i18n Playwright scenarios covering initial language load, manual switching, persistence after reload, and console error checks.
 - Split README documentation into bilingual files: `README.md` (English) and `README_zh_tw.md` (Traditional Chinese), with cross-links for language switching.
+- Added a "Table Style" selector for rich-text table output with seven theme options: gray (default), blue, yellow, red, green, purple, and brown.
+- Refactored table styling into reusable theme palettes and updated Word-friendly table generation to apply the selected palette while preserving existing formatting behavior.
+- Persisted the selected table theme in `localStorage` (`table_style`) and restored it on load for consistent preview and copy results.
 
 ## 1.0.2
 
