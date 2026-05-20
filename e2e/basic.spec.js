@@ -84,3 +84,54 @@ test('可調整 Markdown 標題最高層級', async ({ page }) => {
   await expect(preview.locator('h3')).toHaveText('主標題');
   await expect(preview.locator('h4')).toHaveText('子標題');
 });
+
+test('i18n 初始化應採用 localStorage 語系設定', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('markdown_preview_language', 'zh-TW');
+  });
+
+  await page.goto('/');
+
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-TW');
+  await expect(page.locator('#language-select')).toHaveValue('zh-TW');
+  await expect(page.locator('header h1')).toHaveText('Markdown 編輯器');
+});
+
+test('i18n 可手動切換語系並即時更新文案', async ({ page }) => {
+  const consoleErrors = [];
+
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      consoleErrors.push(msg.text());
+    }
+  });
+
+  await page.goto('/');
+
+  await page.locator('#language-select').selectOption('zh-TW');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-TW');
+  await expect(page.locator('#clear-btn')).toContainText('清空內容');
+
+  await page.locator('#language-select').selectOption('en');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('#clear-btn')).toContainText('Clear Content');
+
+  expect(consoleErrors).toHaveLength(0);
+});
+
+test('i18n 語系選擇會寫入 localStorage 並在重整後保留', async ({ page }) => {
+  await page.goto('/');
+
+  await page.locator('#language-select').selectOption('zh-TW');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-TW');
+
+  await expect
+    .poll(async () => page.evaluate(() => localStorage.getItem('markdown_preview_language')))
+    .toBe('zh-TW');
+
+  await page.reload();
+
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-TW');
+  await expect(page.locator('#language-select')).toHaveValue('zh-TW');
+  await expect(page.locator('header h1')).toHaveText('Markdown 編輯器');
+});

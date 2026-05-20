@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown to Rich Text</title>
+    <title data-i18n="meta.title">Markdown to Rich Text</title>
     <meta name="theme-color" content="#2563eb">
-    <meta name="description" content="A tool for real-time conversion and visualization of Markdown syntax into HTML preview.">
+    <meta name="description" content="A tool for real-time conversion and visualization of Markdown syntax into HTML preview." data-i18n-attr="content:meta.description">
     
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -32,34 +32,41 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <h1 class="text-xl font-bold tracking-tight">Markdown Editor</h1>
+            <h1 class="text-xl font-bold tracking-tight" data-i18n="app.title">Markdown Editor</h1>
         </div>
         <div class="flex gap-3">
             <button id="clear-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">
-                清空內容
+                <span data-i18n="controls.clearContent">Clear Content</span>
             </button>
             <button id="remove-empty-lines-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-amber-600 transition-colors">
-                刪除空行
+                <span data-i18n="controls.removeEmptyLines">Remove Empty Lines</span>
             </button>
             <label class="flex items-center gap-2 text-sm text-gray-600">
-                富文本貼上模式
+                <span data-i18n="language.label">Language</span>
+                <select id="language-select" class="border border-gray-300 rounded px-2 py-1 bg-white text-gray-700">
+                    <option value="en">English</option>
+                    <option value="zh-TW">繁體中文</option>
+                </select>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-gray-600">
+                <span data-i18n="controls.pasteMode">Rich Paste Mode</span>
                 <select id="paste-mode" class="border border-gray-300 rounded px-2 py-1 bg-white text-gray-700">
-                    <option value="replace" selected>replace</option>
-                    <option value="append">append</option>
-                    <option value="prepend">prepend</option>
+                    <option value="replace" selected data-i18n="controls.pasteModeReplace">Replace</option>
+                    <option value="append" data-i18n="controls.pasteModeAppend">Append</option>
+                    <option value="prepend" data-i18n="controls.pasteModePrepend">Prepend</option>
                 </select>
             </label>
             <button id="paste-rich-btn" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-medium transition-all shadow-md active:scale-95">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2m-4 0a2 2 0 002 2h2a2 2 0 002-2m-4 0a2 2 0 012-2h0a2 2 0 012 2m-6 9l2 2 4-4" />
                 </svg>
-                貼上富文本
+                <span data-i18n="controls.pasteRichText">Paste Rich Text</span>
             </button>
             <button id="copy-btn" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-all shadow-md active:scale-95">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                 </svg>
-                複製富文本
+                <span data-i18n="controls.copyRichText">Copy Rich Text</span>
             </button>
         </div>
     </header>
@@ -69,20 +76,20 @@
         
         <!-- 輸入區 -->
         <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Markdown 輸入區
+            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider" data-i18n="panels.markdownInput">
+                Markdown Input
             </div>
             <textarea id="markdown-input" 
                 class="flex-1 p-6 focus:outline-none resize-none font-mono text-sm leading-relaxed" 
-                placeholder="在此輸入或貼上 Markdown 內容..."></textarea>
+                placeholder="Type or paste Markdown content here..." data-i18n-attr="placeholder:editor.placeholder"></textarea>
         </div>
 
         <!-- 預覽區 -->
         <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center justify-between gap-3">
-                <span>即時預覽 (Rich Text)</span>
+                <span data-i18n="panels.previewRichText">Live Preview (Rich Text)</span>
                 <label class="flex items-center gap-2 normal-case tracking-normal text-gray-600">
-                    最頂層標題
+                    <span data-i18n="editor.topHeadingLevel">Top Heading Level</span>
                     <select id="top-heading-level" class="border border-gray-300 rounded px-2 py-1 bg-white text-gray-700">
                         <option value="1">h1</option>
                         <option value="2" selected>h2</option>
@@ -101,8 +108,8 @@
     </main>
 
     <!-- 訊息提示盒 -->
-    <div id="message-box" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 transition-opacity pointer-events-none z-50">
-        已複製到剪貼簿！
+    <div id="message-box" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 transition-opacity pointer-events-none z-50" data-i18n="toast.copiedToClipboard">
+        Copied to clipboard!
     </div>
 
     <script src="scripts/filter.js"></script>
@@ -111,7 +118,7 @@
     <script src="scripts/preview.js"></script>
     <script src="scripts/toast.js"></script>
     <script src="scripts/copy-rich-text.js"></script>
-    <script src="scripts/script.js"></script>
+    <script type="module" src="scripts/script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

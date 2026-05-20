@@ -1,3 +1,11 @@
+# 1.0.3
+
+- 導入多語系（i18n）架構，將翻譯字典拆分為 `scripts/modules/i18n/en.js` 與 `scripts/modules/i18n/zh-TW.js`，並新增 `scripts/modules/i18n.js` 管理語系邏輯。
+- 新增語言切換選單（`#language-select`），可在英文與繁體中文間手動切換，並即時更新頁面靜態文案與動態提示訊息。
+- 語系初始化支援優先順序：`localStorage`（`markdown_preview_language`）→ 瀏覽器語系 → 預設英文，且切換後會自動記憶。
+- `index.html` 靜態文字改為 `data-i18n` / `data-i18n-attr` 綁定，包含標題、按鈕、區塊標頭、placeholder、meta description 與 toast 預設內容。
+- 補上 i18n Playwright 測試情境，涵蓋載入語系、手動切換、reload 後持久化與 console error 檢查。
+
 # 1.0.2
 
 - 新增「貼上模式」選單，支援 `replace`、`append`、`prepend` 三種「貼上富文本」寫入策略，不再只能覆蓋原內容。
