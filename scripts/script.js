@@ -6,11 +6,14 @@ const clearBtn = document.getElementById('clear-btn');
 const removeEmptyLinesBtn = document.getElementById('remove-empty-lines-btn');
 const messageBox = document.getElementById('message-box');
 const topHeadingLevelSelect = document.getElementById('top-heading-level');
+const pasteModeSelect = document.getElementById('paste-mode');
 const TOP_HEADING_LEVEL_KEY = 'top_heading_level';
+const PASTE_MODE_KEY = 'paste_mode';
 
 // 初始化：從 LocalStorage 讀取
 window.onload = async () => {
     loadTopHeadingLevel();
+    loadPasteMode();
     await loadInitialContent();
     updateEditorPreview();
 };
@@ -24,6 +27,10 @@ markdownInput.addEventListener('input', () => {
 topHeadingLevelSelect.addEventListener('change', () => {
     updateEditorPreview();
     localStorage.setItem(TOP_HEADING_LEVEL_KEY, topHeadingLevelSelect.value);
+});
+
+pasteModeSelect.addEventListener('change', () => {
+    localStorage.setItem(PASTE_MODE_KEY, pasteModeSelect.value);
 });
 
 // 貼上富文本並轉成 Markdown
@@ -90,6 +97,15 @@ function loadTopHeadingLevel() {
     }
 }
 
+function loadPasteMode() {
+    const savedPasteMode = localStorage.getItem(PASTE_MODE_KEY);
+    const validModes = ['replace', 'append', 'prepend'];
+
+    if (savedPasteMode && validModes.includes(savedPasteMode)) {
+        pasteModeSelect.value = savedPasteMode;
+    }
+}
+
 async function pasteRichTextAsMarkdown() {
     try {
         const clipboardContent = await readClipboardContent();
@@ -99,20 +115,43 @@ async function pasteRichTextAsMarkdown() {
         }
 
         const markdown = clipboardContent.html ? convertHtmlToMarkdown(clipboardContent.html) : clipboardContent.text;
+        const sanitizedMarkdown = markdown.trim();
 
-        markdownInput.value = markdown.trim();
+        if (!sanitizedMarkdown) {
+            showEditorToast("剪貼簿內容是空白，未更新內容。");
+            return;
+        }
+
+        const pasteMode = pasteModeSelect.value;
+        markdownInput.value = mergeMarkdownContent(markdownInput.value, sanitizedMarkdown, pasteMode);
         updateEditorPreview();
         localStorage.setItem('markdown_content', markdownInput.value);
 
         if (copyRichText(previewArea)) {
-            showEditorToast("富文本已轉成 Markdown 並複製！");
+            showEditorToast(`富文本已以 ${pasteMode} 模式轉成 Markdown 並複製！`);
         } else {
-            showEditorToast("富文本已轉成 Markdown，但複製失敗。");
+            showEditorToast(`富文本已以 ${pasteMode} 模式轉成 Markdown，但複製失敗。`);
         }
     } catch (err) {
         console.error('無法讀取剪貼簿:', err);
         showEditorToast("無法讀取剪貼簿，請確認瀏覽器權限。");
     }
+}
+
+function mergeMarkdownContent(currentContent, incomingContent, mode) {
+    const currentText = currentContent.trim();
+
+    if (mode === 'append') {
+        if (!currentText) return incomingContent;
+        return `${currentText}\n\n${incomingContent}`;
+    }
+
+    if (mode === 'prepend') {
+        if (!currentText) return incomingContent;
+        return `${incomingContent}\n\n${currentText}`;
+    }
+
+    return incomingContent;
 }
 
 function updateEditorPreview() {
