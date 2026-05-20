@@ -7,6 +7,7 @@
 - Implemented language initialization priority: `localStorage` (`markdown_preview_language`) -> browser language -> default English, with persistence after switching.
 - Replaced static text in `index.html` with `data-i18n` / `data-i18n-attr` bindings, including titles, buttons, panel headers, placeholders, meta description, and default toast text.
 - Added i18n Playwright scenarios covering initial language load, manual switching, persistence after reload, and console error checks.
+- Split README documentation into bilingual files: `README.md` (English) and `README_zh_tw.md` (Traditional Chinese), with cross-links for language switching.
 
 ## 1.0.2
 
