@@ -1,12 +1,18 @@
 const DEFAULT_TOP_HEADING_LEVEL = 2;
+const DEFAULT_RICH_TEXT_FORMAT = "sop";
 
-function updatePreview(markdownInput, previewArea, topHeadingLevel = DEFAULT_TOP_HEADING_LEVEL) {
+function updatePreview(
+    markdownInput,
+    previewArea,
+    topHeadingLevel = DEFAULT_TOP_HEADING_LEVEL,
+    richTextFormat = DEFAULT_RICH_TEXT_FORMAT
+) {
     let rawValue = markdownInput.value;
     rawValue = filterMarkdown(rawValue);
 
     previewArea.innerHTML = marked.parse(rawValue);
     normalizeHeadingLevels(previewArea, topHeadingLevel);
-    applyWordTableStyles(previewArea);
+    applyRichTextFormat(previewArea, richTextFormat);
 }
 
 function normalizeHeadingLevels(container, topHeadingLevel) {
@@ -45,4 +51,49 @@ function normalizeTopHeadingLevel(level) {
     }
 
     return normalizedLevel;
+}
+
+function applyRichTextFormat(container, richTextFormat) {
+    if (richTextFormat === "plain") {
+        applyPlainTableStyles(container);
+        return;
+    }
+
+    applyWordTableStyles(container);
+}
+
+function applyPlainTableStyles(container) {
+    const tables = container.matches?.("table") ? [container] : Array.from(container.querySelectorAll("table"));
+
+    tables.forEach(table => {
+        table.removeAttribute("style");
+        table.setAttribute("border", "1");
+        table.setAttribute("cellspacing", "0");
+        table.setAttribute("cellpadding", "6");
+        table.setAttribute("width", "100%");
+        table.setAttribute("bordercolor", "#000000");
+
+        Array.from(table.rows).forEach(row => {
+            row.removeAttribute("style");
+            row.removeAttribute("bgcolor");
+
+            Array.from(row.cells).forEach(cell => {
+                const align = cell.getAttribute("align") || getCellStyleTextAlign(cell) || "left";
+
+                cell.removeAttribute("style");
+                cell.removeAttribute("bgcolor");
+                cell.setAttribute("align", align);
+                cell.setAttribute("valign", "top");
+            });
+        });
+
+        table.querySelectorAll("[style]").forEach(element => {
+            element.removeAttribute("style");
+        });
+    });
+}
+
+function getCellStyleTextAlign(cell) {
+    const match = cell.getAttribute("style")?.match(/text-align\s*:\s*([^;]+)/i);
+    return match ? match[1].trim() : "";
 }

@@ -8,17 +8,21 @@ const clearBtn = document.getElementById("clear-btn");
 const removeEmptyLinesBtn = document.getElementById("remove-empty-lines-btn");
 const messageBox = document.getElementById("message-box");
 const topHeadingLevelSelect = document.getElementById("top-heading-level");
+const richTextFormatSelect = document.getElementById("rich-text-format");
 const pasteModeSelect = document.getElementById("paste-mode");
 const tableStyleSelect = document.getElementById("table-style");
 const TOP_HEADING_LEVEL_KEY = "top_heading_level";
+const RICH_TEXT_FORMAT_KEY = "rich_text_format";
 const PASTE_MODE_KEY = "paste_mode";
 const TABLE_STYLE_KEY = "table_style";
 const MARKDOWN_CONTENT_KEY = "markdown_content";
 const VALID_TABLE_STYLES = ["gray", "blue", "yellow", "red", "green", "purple", "brown"];
+const VALID_RICH_TEXT_FORMATS = ["sop", "plain"];
 
 // 初始化：從 LocalStorage 讀取
 window.addEventListener("load", async () => {
     loadTopHeadingLevel();
+    loadRichTextFormat();
     loadPasteMode();
     loadTableStyle();
     await loadInitialContent();
@@ -35,6 +39,12 @@ markdownInput.addEventListener("input", () => {
 topHeadingLevelSelect.addEventListener("change", () => {
     updateEditorPreview();
     localStorage.setItem(TOP_HEADING_LEVEL_KEY, topHeadingLevelSelect.value);
+});
+
+richTextFormatSelect.addEventListener("change", () => {
+    updateRichTextFormatUI();
+    updateEditorPreview();
+    localStorage.setItem(RICH_TEXT_FORMAT_KEY, richTextFormatSelect.value);
 });
 
 pasteModeSelect.addEventListener("change", () => {
@@ -123,6 +133,13 @@ function loadPasteMode() {
     }
 }
 
+function loadRichTextFormat() {
+    const savedRichTextFormat = localStorage.getItem(RICH_TEXT_FORMAT_KEY);
+    const richTextFormat = VALID_RICH_TEXT_FORMATS.includes(savedRichTextFormat) ? savedRichTextFormat : "sop";
+    richTextFormatSelect.value = richTextFormat;
+    updateRichTextFormatUI();
+}
+
 function loadTableStyle() {
     const savedTableStyle = localStorage.getItem(TABLE_STYLE_KEY);
     const tableStyle = VALID_TABLE_STYLES.includes(savedTableStyle) ? savedTableStyle : "gray";
@@ -131,6 +148,13 @@ function loadTableStyle() {
     if (typeof window.setTableStyleTheme === "function") {
         window.setTableStyleTheme(tableStyle);
     }
+}
+
+function updateRichTextFormatUI() {
+    const isSopFormat = richTextFormatSelect.value === "sop";
+    tableStyleSelect.disabled = !isSopFormat;
+    tableStyleSelect.classList.toggle("opacity-60", !isSopFormat);
+    tableStyleSelect.classList.toggle("cursor-not-allowed", !isSopFormat);
 }
 
 async function pasteRichTextAsMarkdown() {
@@ -183,7 +207,7 @@ function mergeMarkdownContent(currentContent, incomingContent, mode) {
 }
 
 function updateEditorPreview() {
-    updatePreview(markdownInput, previewArea, topHeadingLevelSelect.value);
+    updatePreview(markdownInput, previewArea, topHeadingLevelSelect.value, richTextFormatSelect.value);
 }
 
 function showEditorToast(msg) {

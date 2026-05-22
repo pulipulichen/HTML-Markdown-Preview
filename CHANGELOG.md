@@ -2,15 +2,23 @@
 
 ## 1.0.3
 
-- Introduced an i18n architecture by splitting translation dictionaries into `scripts/modules/i18n/en.js` and `scripts/modules/i18n/zh-TW.js`, and added `scripts/modules/i18n.js` for language state management.
-- Added a language switcher (`#language-select`) to manually switch between English and Traditional Chinese, with immediate updates to static UI text and dynamic messages.
-- Implemented language initialization priority: `localStorage` (`markdown_preview_language`) -> browser language -> default English, with persistence after switching.
-- Replaced static text in `index.html` with `data-i18n` / `data-i18n-attr` bindings, including titles, buttons, panel headers, placeholders, meta description, and default toast text.
-- Added i18n Playwright scenarios covering initial language load, manual switching, persistence after reload, and console error checks.
-- Split README documentation into bilingual files: `README.md` (English) and `README_zh_tw.md` (Traditional Chinese), with cross-links for language switching.
-- Added a "Table Style" selector for rich-text table output with seven theme options: gray (default), blue, yellow, red, green, purple, and brown.
-- Refactored table styling into reusable theme palettes and updated Word-friendly table generation to apply the selected palette while preserving existing formatting behavior.
-- Persisted the selected table theme in `localStorage` (`table_style`) and restored it on load for consistent preview and copy results.
+### Added
+
+- Introduced an i18n architecture (`scripts/modules/i18n/en.js`, `scripts/modules/i18n/zh-TW.js`, and `scripts/modules/i18n.js`), added `data-i18n` / `data-i18n-attr` bindings in `index.html`, and shipped a language switcher with `localStorage` persistence (`markdown_preview_language`).
+- Added i18n Playwright scenarios for initial language detection, manual switching, reload persistence, and console error checks, and split project documentation into bilingual files (`README.md` and `README_zh_tw.md`).
+- Added a "Table Style" selector for rich-text table output with seven themes and persisted the selected value in `localStorage` (`table_style`).
+- Added Markdown cleanup improvements to remove trailing numeric citation tags (for example `[15]` or `[12, 15]`) before `。`, and render `[!NOTE]` lines as highlighted notes.
+- Added a "Copy Rich Text Format" selector in Live Preview with `SOP Manual` and `Plain` modes, persisted the selection in `localStorage` (`rich_text_format`), and applied plain-mode table output with default black borders.
+
+### Fixed
+
+- Fixed Docker E2E failures caused by host `node_modules` shadowing Playwright in the container by adding an anonymous `/app/node_modules` volume in `docker-compose.yml`.
+- Fixed Playwright artifact/report path conflicts by removing `--output=/app/playwright-report-videos` from `Dockerfile.test` and using `outputDir: test-results` from `playwright.config.js`.
+- Fixed an invalid regular expression in `scripts/filter.js` (`/^\n=++\n$/`) that caused a runtime `SyntaxError`, replacing it with a multiline-safe rule for repeated `=` lines.
+
+### Improved
+
+- Added `.jshintrc` lint configuration to allow no trailing semicolons (`asi: true`) and support modern JavaScript syntax used in this project.
 
 ## 1.0.2
 
