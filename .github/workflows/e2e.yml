@@ -15,13 +15,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install Podman
+      uses: gacts/install-podman@v1
 
-    - uses: gacts/install-podman@v1
-    
-    - name: Install Podman and compose provider 
+    - name: Install podman-compose
       run: |
-        sudo apt-get update
-        sudo apt-get install -y podman podman-compose
+        python3 -m pip install --user --upgrade pip
+        python3 -m pip install --user podman-compose
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+    - name: Verify Podman toolchain
+      run: |
+        podman --version
+        podman-compose --version
 
     - name: Run E2E tests with podman-compose
       run: |
