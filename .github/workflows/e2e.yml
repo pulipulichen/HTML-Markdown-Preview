@@ -18,7 +18,7 @@ jobs:
 
     - uses: gacts/install-podman@v1
     
-    - name: Install Podman and compose provider
+    - name: Install Podman and compose provider 
       run: |
         sudo apt-get update
         sudo apt-get install -y podman podman-compose
