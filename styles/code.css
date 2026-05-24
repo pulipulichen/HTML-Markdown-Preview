@@ -4,11 +4,11 @@
     padding-top: 0px;
 }
 
-#preview-area table th {
+#preview-area table:not([data-code-block-table="true"]) th {
     border-color: black;
 }
 
-#preview-area table td {
+#preview-area table:not([data-code-block-table="true"]) td {
     border-color: black;
     padding-top: 6px;
 }

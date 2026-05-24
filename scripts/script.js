@@ -4,15 +4,19 @@ import {
     RICH_TEXT_FORMAT_KEY,
     PASTE_MODE_KEY,
     TABLE_STYLE_KEY,
+    CODE_BLOCK_TO_TABLE_KEY,
     MARKDOWN_CONTENT_KEY,
     loadInitialContent,
+    loadDefaultMarkdown,
     loadTopHeadingLevel,
     loadPasteMode,
     loadRichTextFormat,
     loadTableStyle,
+    loadCodeBlockToTable,
     updateRichTextFormatUI
 } from "./modules/editor/settings.js";
 import { pasteRichTextAsMarkdown } from "./modules/editor/paste.js";
+import { bindSopSettingsModal } from "./modules/editor/sop-settings-modal.js";
 
 const markdownInput = document.getElementById("markdown-input");
 const previewArea = document.getElementById("preview-area");
@@ -20,16 +24,37 @@ const copyBtn = document.getElementById("copy-btn");
 const pasteRichBtn = document.getElementById("paste-rich-btn");
 const clearBtn = document.getElementById("clear-btn");
 const removeEmptyLinesBtn = document.getElementById("remove-empty-lines-btn");
+const loadDefaultMarkdownBtn = document.getElementById("load-default-markdown-btn");
 const messageBox = document.getElementById("message-box");
 const topHeadingLevelSelect = document.getElementById("top-heading-level");
 const richTextFormatSelect = document.getElementById("rich-text-format");
 const pasteModeSelect = document.getElementById("paste-mode");
 const tableStyleSelect = document.getElementById("table-style");
+const codeBlockToTableCheckbox = document.getElementById("code-block-to-table");
+const sopSettingsBtn = document.getElementById("sop-settings-btn");
+const sopSettingsModal = document.getElementById("sop-settings-modal");
+const sopSettingsCloseBtn = document.getElementById("sop-settings-close-btn");
+const sopSettingsCloseIconBtn = document.getElementById("sop-settings-close-icon");
+const renderSettingsSopSection = document.getElementById("render-settings-sop-section");
+const sopTopHeadingHint = document.getElementById("sop-top-heading-hint");
+
+const renderSettingsElements = {
+    sopSection: renderSettingsSopSection,
+    sopTopHeadingHint
+};
+
+bindSopSettingsModal({
+    modal: sopSettingsModal,
+    openBtn: sopSettingsBtn,
+    closeBtn: sopSettingsCloseBtn,
+    closeIconBtn: sopSettingsCloseIconBtn
+});
 
 // 初始化：從 LocalStorage 讀取
 window.addEventListener("load", async () => {
     loadTopHeadingLevel(topHeadingLevelSelect);
-    loadRichTextFormat(richTextFormatSelect, tableStyleSelect);
+    loadRichTextFormat(richTextFormatSelect, renderSettingsElements);
+    loadCodeBlockToTable(codeBlockToTableCheckbox);
     loadPasteMode(pasteModeSelect);
     loadTableStyle(tableStyleSelect);
     await loadInitialContent(markdownInput, t);
@@ -49,9 +74,14 @@ topHeadingLevelSelect.addEventListener("change", () => {
 });
 
 richTextFormatSelect.addEventListener("change", () => {
-    updateRichTextFormatUI(richTextFormatSelect, tableStyleSelect);
+    updateRichTextFormatUI(richTextFormatSelect, renderSettingsElements);
     updateEditorPreview();
     localStorage.setItem(RICH_TEXT_FORMAT_KEY, richTextFormatSelect.value);
+});
+
+codeBlockToTableCheckbox.addEventListener("change", () => {
+    updateEditorPreview();
+    localStorage.setItem(CODE_BLOCK_TO_TABLE_KEY, codeBlockToTableCheckbox.checked ? "true" : "false");
 });
 
 pasteModeSelect.addEventListener("change", () => {
@@ -100,6 +130,18 @@ clearBtn.addEventListener("click", () => {
     }
 });
 
+// 載入預設 Markdown
+loadDefaultMarkdownBtn.addEventListener("click", async () => {
+    if (markdownInput.value.trim() !== "" && !confirm(t("confirm.loadDefaultMarkdown"))) {
+        return;
+    }
+
+    await loadDefaultMarkdown(markdownInput, t);
+    updateEditorPreview();
+    localStorage.setItem(MARKDOWN_CONTENT_KEY, markdownInput.value);
+    showEditorToast(t("toast.defaultMarkdownLoaded"));
+});
+
 // 刪除空行功能
 removeEmptyLinesBtn.addEventListener("click", () => {
     const lines = markdownInput.value.split("\n");
@@ -117,7 +159,13 @@ removeEmptyLinesBtn.addEventListener("click", () => {
 });
 
 function updateEditorPreview() {
-    updatePreview(markdownInput, previewArea, topHeadingLevelSelect.value, richTextFormatSelect.value);
+    updatePreview(
+        markdownInput,
+        previewArea,
+        topHeadingLevelSelect.value,
+        richTextFormatSelect.value,
+        codeBlockToTableCheckbox.checked
+    );
 }
 
 function showEditorToast(msg) {

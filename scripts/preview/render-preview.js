@@ -5,14 +5,49 @@ function updatePreview(
     markdownInput,
     previewArea,
     topHeadingLevel = DEFAULT_TOP_HEADING_LEVEL,
-    richTextFormat = DEFAULT_RICH_TEXT_FORMAT
+    richTextFormat = DEFAULT_RICH_TEXT_FORMAT,
+    codeBlockToTable = false
 ) {
     let rawValue = markdownInput.value;
     rawValue = filterMarkdown(rawValue);
 
     previewArea.innerHTML = marked.parse(rawValue);
     normalizeHeadingLevels(previewArea, topHeadingLevel);
+
+    if (codeBlockToTable) {
+        convertCodeBlocksToSingleCellTables(previewArea);
+    }
+
     applyRichTextFormat(previewArea, richTextFormat);
+}
+
+function convertCodeBlocksToSingleCellTables(container) {
+    Array.from(container.querySelectorAll("pre")).forEach(pre => {
+        const code = pre.querySelector("code");
+        const text = (code || pre).textContent.replace(/\u00a0/g, " ") || "";
+        const lines = text.split("\n");
+
+        if (lines.length > 1 && lines[lines.length - 1] === "") {
+            lines.pop();
+        }
+
+        const table = document.createElement("table");
+        table.setAttribute("data-code-block-table", "true");
+
+        const row = table.insertRow();
+        const cell = row.insertCell();
+        cell.innerHTML = lines.map(escapeHtml).join("<br>");
+
+        pre.replaceWith(table);
+    });
+}
+
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
 }
 
 function normalizeHeadingLevels(container, topHeadingLevel) {
@@ -60,6 +95,44 @@ function applyRichTextFormat(container, richTextFormat) {
     }
 
     applyWordTableStyles(container);
+    applyPlainCodeBlockTableStyles(container);
+}
+
+function applyPlainCodeBlockTableStyles(container) {
+    const tables = Array.from(container.querySelectorAll('table[data-code-block-table="true"]'));
+    const tableStyle = getActiveTableStyle();
+
+    tables.forEach(table => {
+        table.removeAttribute("style");
+        table.setAttribute("border", "1");
+        table.setAttribute("cellspacing", "0");
+        table.setAttribute("cellpadding", "6");
+        table.setAttribute("width", "100%");
+        table.setAttribute("bordercolor", tableStyle.borderColor);
+
+        Array.from(table.rows).forEach(row => {
+            row.removeAttribute("style");
+            row.setAttribute("bgcolor", "#ffffff");
+
+            Array.from(row.cells).forEach(cell => {
+                cell.removeAttribute("style");
+                cell.setAttribute("bgcolor", "#ffffff");
+                cell.setAttribute("align", "left");
+                cell.setAttribute("valign", "top");
+                cell.innerHTML = `<font color="#000000" face="Consolas, monospace">${cell.innerHTML}</font>`;
+            });
+        });
+
+        table.querySelectorAll("[style]").forEach(element => {
+            element.removeAttribute("style");
+        });
+
+        const borderColor = tableStyle.borderColor;
+        table.style.borderColor = borderColor;
+        Array.from(table.querySelectorAll("td, th")).forEach(cell => {
+            cell.style.border = `1px solid ${borderColor}`;
+        });
+    });
 }
 
 function applyPlainTableStyles(container) {

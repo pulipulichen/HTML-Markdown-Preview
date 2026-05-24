@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## 1.0.4
+
+### Added
+
+- Added a "Load Default Markdown" toolbar button that loads `default_markdown.md` into the editor, prompts before replacing existing content, persists the result in `localStorage` (`markdown_content`), and includes English and Traditional Chinese labels.
+- Added an option to convert fenced code blocks into single-cell tables with plain styling (white background, black text, border color matching the selected Table Style in SOP mode or default black borders in Plain mode), persisted in `localStorage` (`code_block_to_table`).
+- Added a Render Settings modal for preview output options, opened from a gear button in the Live Preview toolbar.
+- Added rich-text paste conversion for single-cell tables (1 row, 1 column) to fenced code blocks instead of GFM tables.
+
+### Fixed
+
+- Fixed rich-text paste conversion escaping numbered heading prefixes (for example `### 1. Title` becoming `### 1\. Title`) by restoring Turndown-escaped sequences after conversion.
+- Fixed rich-text paste conversion inserting blank lines between consecutive list items when source HTML wraps each `<li>` in a `<p>` or `<div>`, by unwrapping those block elements before Turndown runs and tightening leftover spacing in paste sanitization.
+- Fixed rich-text paste conversion for single-cell tables to preserve line breaks from block elements such as `<p>` and `<br>`, so multi-line terminal output stays intact inside code blocks.
+- Fixed single-cell code block table borders in preview and copy output to use each Table Style theme's dark border color instead of the default gray or black border.
+
+### Improved
+
+- Renamed SOP Settings to Render Settings and consolidated Copy Rich Text Format, Top Heading Level, Table Style, and code-block conversion into a single modal dialog.
+- Added an SOP-specific hint in Render Settings recommending h2 as the top heading level for SOP manuals.
+- Kept the code-block-to-table option available in both SOP Manual and Plain formats; only Table Style remains SOP-specific in the modal.
+- Aligned the Markdown Input and Live Preview panel header bars to equal height on desktop by restructuring the main workspace with CSS Grid, so the left label row matches the taller right-side toolbar controls.
+- Improved rich-text paste sanitization to collapse consecutive empty lines (including whitespace-only lines) to a single blank line, while leaving blank lines inside fenced code blocks unchanged.
+- Improved rich-text paste HTML preprocessing to unwrap `<p>` and `<div>` block elements inside list items before Markdown conversion, producing compact bullet lists that match the source layout more closely.
+
 ## 1.0.3
 
 ### Added

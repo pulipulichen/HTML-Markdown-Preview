@@ -12,6 +12,7 @@ export const ZH_TW_TRANSLATIONS = {
     controls: {
         clearContent: "清空內容",
         removeEmptyLines: "刪除空行",
+        loadDefaultMarkdown: "載入預設 Markdown",
         pasteMode: "富文本貼上模式",
         pasteModeReplace: "取代",
         pasteModeAppend: "附加",
@@ -19,6 +20,14 @@ export const ZH_TW_TRANSLATIONS = {
         richTextFormat: "複製富文本格式",
         richTextFormatSop: "SOP手冊格式",
         richTextFormatPlain: "無格式",
+        codeBlockToTable: "將程式碼語法轉換成單格表格",
+        sopSettings: "SOP 設定",
+        renderSettings: "渲染設定",
+        renderSettingsTitle: "渲染設定",
+        sopTopHeadingHint: "若為 SOP 手冊，建議最頂層標題從 h2 開始。",
+        sopSettingsTitle: "SOP 手冊格式設定",
+        sopSettingsConfirm: "完成",
+        close: "關閉",
         tableStyle: "表格格式",
         tableStyleGray: "灰",
         tableStyleBlue: "藍",
@@ -44,6 +53,7 @@ export const ZH_TW_TRANSLATIONS = {
         copyFailed: "複製失敗，請手動選取。",
         noEmptyLines: "沒有可刪除的空行。",
         removedEmptyLines: "已刪除空行。",
+        defaultMarkdownLoaded: "已載入預設 Markdown。",
         clipboardEmpty: "剪貼簿沒有可貼上的內容。",
         clipboardBlank: "剪貼簿內容是空白，未更新內容。",
         pasteAndCopied: "富文本已以 {mode} 模式轉成 Markdown 並複製！",
@@ -51,7 +61,8 @@ export const ZH_TW_TRANSLATIONS = {
         clipboardPermissionDenied: "無法讀取剪貼簿，請確認瀏覽器權限。"
     },
     confirm: {
-        clearAll: "確定要清空所有內容嗎？"
+        clearAll: "確定要清空所有內容嗎？",
+        loadDefaultMarkdown: "確定要以預設 Markdown 取代目前內容嗎？"
     },
     error: {
         loadDefaultContent: "無法讀取預設內容:"

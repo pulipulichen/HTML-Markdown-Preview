@@ -12,6 +12,7 @@ export const EN_TRANSLATIONS = {
     controls: {
         clearContent: "Clear Content",
         removeEmptyLines: "Remove Empty Lines",
+        loadDefaultMarkdown: "Load Default Markdown",
         pasteMode: "Rich Paste Mode",
         pasteModeReplace: "Replace",
         pasteModeAppend: "Append",
@@ -19,6 +20,14 @@ export const EN_TRANSLATIONS = {
         richTextFormat: "Copy Rich Text Format",
         richTextFormatSop: "SOP Manual",
         richTextFormatPlain: "Plain",
+        codeBlockToTable: "Convert code blocks to single-cell table",
+        sopSettings: "SOP Settings",
+        renderSettings: "Render Settings",
+        renderSettingsTitle: "Render Settings",
+        sopTopHeadingHint: "For SOP manuals, h2 is recommended as the top heading level.",
+        sopSettingsTitle: "SOP Manual Settings",
+        sopSettingsConfirm: "Done",
+        close: "Close",
         tableStyle: "Table Style",
         tableStyleGray: "Gray",
         tableStyleBlue: "Blue",
@@ -44,6 +53,7 @@ export const EN_TRANSLATIONS = {
         copyFailed: "Copy failed, please select manually.",
         noEmptyLines: "No empty lines to remove.",
         removedEmptyLines: "Empty lines removed.",
+        defaultMarkdownLoaded: "Default Markdown loaded.",
         clipboardEmpty: "Clipboard has no content to paste.",
         clipboardBlank: "Clipboard content is blank, nothing changed.",
         pasteAndCopied: "Rich text converted to Markdown in {mode} mode and copied!",
@@ -51,7 +61,8 @@ export const EN_TRANSLATIONS = {
         clipboardPermissionDenied: "Unable to read clipboard. Please check browser permissions."
     },
     confirm: {
-        clearAll: "Are you sure you want to clear all content?"
+        clearAll: "Are you sure you want to clear all content?",
+        loadDefaultMarkdown: "Replace current content with the default Markdown?"
     },
     error: {
         loadDefaultContent: "Unable to load default content:"

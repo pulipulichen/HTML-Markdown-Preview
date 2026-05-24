@@ -2,10 +2,29 @@ export const TOP_HEADING_LEVEL_KEY = "top_heading_level";
 export const RICH_TEXT_FORMAT_KEY = "rich_text_format";
 export const PASTE_MODE_KEY = "paste_mode";
 export const TABLE_STYLE_KEY = "table_style";
+export const CODE_BLOCK_TO_TABLE_KEY = "code_block_to_table";
 export const MARKDOWN_CONTENT_KEY = "markdown_content";
 
 export const VALID_TABLE_STYLES = ["gray", "blue", "yellow", "red", "green", "purple", "brown"];
 export const VALID_RICH_TEXT_FORMATS = ["sop", "plain"];
+
+export async function fetchDefaultMarkdown(t) {
+    try {
+        const response = await fetch("default_markdown.md");
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        return (await response.text()).trim();
+    } catch (err) {
+        console.error(t("error.loadDefaultContent"), err);
+        return t("fallback.defaultMarkdownTitle");
+    }
+}
+
+export async function loadDefaultMarkdown(markdownInput, t) {
+    markdownInput.value = await fetchDefaultMarkdown(t);
+}
 
 export async function loadInitialContent(markdownInput, t) {
     const savedContent = localStorage.getItem(MARKDOWN_CONTENT_KEY);
@@ -14,15 +33,7 @@ export async function loadInitialContent(markdownInput, t) {
         return;
     }
 
-    try {
-        const response = await fetch("default_markdown.md");
-        let defaultContent = await response.text();
-        defaultContent = defaultContent.trim();
-        markdownInput.value = defaultContent;
-    } catch (err) {
-        console.error(t("error.loadDefaultContent"), err);
-        markdownInput.value = t("fallback.defaultMarkdownTitle");
-    }
+    await loadDefaultMarkdown(markdownInput, t);
 }
 
 export function loadTopHeadingLevel(topHeadingLevelSelect) {
@@ -41,11 +52,19 @@ export function loadPasteMode(pasteModeSelect) {
     }
 }
 
-export function loadRichTextFormat(richTextFormatSelect, tableStyleSelect) {
+export function loadRichTextFormat(richTextFormatSelect, renderSettingsElements) {
     const savedRichTextFormat = localStorage.getItem(RICH_TEXT_FORMAT_KEY);
     const richTextFormat = VALID_RICH_TEXT_FORMATS.includes(savedRichTextFormat) ? savedRichTextFormat : "sop";
     richTextFormatSelect.value = richTextFormat;
-    updateRichTextFormatUI(richTextFormatSelect, tableStyleSelect);
+    updateRichTextFormatUI(richTextFormatSelect, renderSettingsElements);
+}
+
+export function loadCodeBlockToTable(codeBlockToTableCheckbox) {
+    if (!codeBlockToTableCheckbox) {
+        return;
+    }
+
+    codeBlockToTableCheckbox.checked = localStorage.getItem(CODE_BLOCK_TO_TABLE_KEY) === "true";
 }
 
 export function loadTableStyle(tableStyleSelect) {
@@ -58,9 +77,10 @@ export function loadTableStyle(tableStyleSelect) {
     }
 }
 
-export function updateRichTextFormatUI(richTextFormatSelect, tableStyleSelect) {
+export function updateRichTextFormatUI(richTextFormatSelect, renderSettingsElements = {}) {
     const isSopFormat = richTextFormatSelect.value === "sop";
-    tableStyleSelect.disabled = !isSopFormat;
-    tableStyleSelect.classList.toggle("opacity-60", !isSopFormat);
-    tableStyleSelect.classList.toggle("cursor-not-allowed", !isSopFormat);
+    const { sopSection, sopTopHeadingHint } = renderSettingsElements;
+
+    sopSection?.classList.toggle("hidden", !isSopFormat);
+    sopTopHeadingHint?.classList.toggle("hidden", !isSopFormat);
 }

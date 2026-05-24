@@ -79,6 +79,39 @@ function getActiveTableStyle() {
 window.getTableStyleTheme = getTableStyleTheme;
 window.setTableStyleTheme = setTableStyleTheme;
 
+function unwrapBlockElementsInListItems(root) {
+    root.querySelectorAll("li").forEach(listItem => {
+        const blocks = Array.from(listItem.children).filter(child => child.tagName === "P" || child.tagName === "DIV");
+
+        if (blocks.length === 0) {
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        blocks.forEach((block, index) => {
+            if (index > 0) {
+                fragment.appendChild(document.createElement("br"));
+            }
+
+            while (block.firstChild) {
+                fragment.appendChild(block.firstChild);
+            }
+
+            block.remove();
+        });
+
+        listItem.prepend(fragment);
+    });
+}
+
+function preprocessHtmlForMarkdown(html) {
+    const container = document.createElement("div");
+    container.innerHTML = html.trim();
+    unwrapBlockElementsInListItems(container);
+    return container.innerHTML;
+}
+
 function convertHtmlToMarkdown(html) {
     const turndownService = new TurndownService({
         headingStyle: "atx",
@@ -93,8 +126,10 @@ function convertHtmlToMarkdown(html) {
 
     addMarkdownTableRule(turndownService);
 
-    return turndownService.turndown(html);
+    return turndownService.turndown(preprocessHtmlForMarkdown(html));
 }
+
+window.convertHtmlToMarkdown = convertHtmlToMarkdown;
 
 function addMarkdownTableRule(turndownService) {
     turndownService.addRule("markdownTables", {
@@ -106,7 +141,49 @@ function addMarkdownTableRule(turndownService) {
     });
 }
 
+function extractPlainTextWithLineBreaks(element) {
+    const BLOCK_TAGS = new Set([
+        "P", "DIV", "PRE", "LI", "H1", "H2", "H3", "H4", "H5", "H6",
+        "O:P", "TR", "BLOCKQUOTE"
+    ]);
+
+    function walk(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            return node.textContent.replace(/\u00a0/g, " ");
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) {
+            return "";
+        }
+
+        if (node.nodeName === "BR") {
+            return "\n";
+        }
+
+        const childText = Array.from(node.childNodes).map(walk).join("");
+
+        return BLOCK_TAGS.has(node.nodeName) ? `${childText}\n` : childText;
+    }
+
+    return walk(element)
+        .replace(/\r\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+}
+
+function convertSingleCellTableToCodeBlock(cell) {
+    const content = extractPlainTextWithLineBreaks(cell.cloneNode(true));
+
+    return `\`\`\`\n${content}\n\`\`\``;
+}
+
 function convertTableNodeToMarkdown(table, turndownService) {
+    const tableRows = Array.from(table.rows);
+
+    if (tableRows.length === 1 && tableRows[0].cells.length === 1) {
+        return convertSingleCellTableToCodeBlock(tableRows[0].cells[0]);
+    }
+
     if (table.querySelector("[rowspan], [colspan]")) {
         const tableClone = table.cloneNode(true);
         applyWordTableStyles(tableClone);
@@ -155,6 +232,10 @@ function applyWordTableStyles(container) {
     const tableStyle = getActiveTableStyle();
 
     tables.forEach(table => {
+        if (table.hasAttribute("data-code-block-table")) {
+            return;
+        }
+
         table.removeAttribute("style");
         table.setAttribute("border", "1");
         table.setAttribute("cellspacing", "0");

@@ -1,3 +1,55 @@
+function isEmptyLine(line) {
+    return line.trim() === "";
+}
+
+function collapseConsecutiveEmptyLines(markdown) {
+    const lines = markdown.split(/\r?\n/);
+    const result = [];
+    let inCodeFence = false;
+    let lastWasEmpty = false;
+
+    for (const line of lines) {
+        if (/^```/.test(line.trim())) {
+            inCodeFence = !inCodeFence;
+            result.push(line);
+            lastWasEmpty = false;
+            continue;
+        }
+
+        if (inCodeFence) {
+            result.push(line);
+            continue;
+        }
+
+        if (isEmptyLine(line)) {
+            if (lastWasEmpty) {
+                continue;
+            }
+
+            lastWasEmpty = true;
+            result.push("");
+            continue;
+        }
+
+        lastWasEmpty = false;
+        result.push(line);
+    }
+
+    return result.join("\n");
+}
+
+function unescapeHeadingNumberedPrefixes(markdown) {
+    return markdown.replace(/^(#{1,6}\s+\d+)\\. /gm, "$1. ");
+}
+
+function tightenConsecutiveListItems(markdown) {
+    return markdown
+        .replace(/^(\s*[-*+]\s+.+)\n\n+(?=^\s*[-*+]\s+)/gm, "$1\n")
+        .replace(/^(\s*\d+\.\s+.+)\n\n+(?=^\s*\d+\.\s+)/gm, "$1\n")
+        .replace(/^(\s*[-*+]\s+.+)\n[ \t]+\n(?=^\s*[-*+]\s+)/gm, "$1\n")
+        .replace(/^(\s*\d+\.\s+.+)\n[ \t]+\n(?=^\s*\d+\.\s+)/gm, "$1\n");
+}
+
 function sanitizePastedMarkdown(markdown) {
     const lines = markdown.split(/\r?\n/);
     const firstLine = lines[0]?.trim();
@@ -8,7 +60,11 @@ function sanitizePastedMarkdown(markdown) {
         lines.pop();
     }
 
-    return lines.join("\n").trim();
+    const normalizedMarkdown = tightenConsecutiveListItems(
+        unescapeHeadingNumberedPrefixes(lines.join("\n"))
+    );
+
+    return collapseConsecutiveEmptyLines(normalizedMarkdown).trim();
 }
 
 function mergeMarkdownContent(currentContent, incomingContent, mode) {

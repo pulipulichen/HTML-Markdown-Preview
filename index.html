@@ -41,6 +41,9 @@
             <button id="remove-empty-lines-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-amber-600 transition-colors">
                 <span data-i18n="controls.removeEmptyLines">Remove Empty Lines</span>
             </button>
+            <button id="load-default-markdown-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+                <span data-i18n="controls.loadDefaultMarkdown">Load Default Markdown</span>
+            </button>
             <label class="flex items-center gap-2 text-sm text-gray-600">
                 <span data-i18n="language.label">Language</span>
                 <select id="language-select" class="border border-gray-300 rounded px-2 py-1 bg-white text-gray-700">
@@ -72,26 +75,67 @@
     </header>
 
     <!-- 主要工作區 -->
-    <main class="flex-1 flex flex-col md:flex-row overflow-hidden p-4 gap-4">
-        
+    <main class="flex-1 grid min-h-0 grid-cols-1 grid-rows-[auto_1fr_auto_1fr] md:grid-cols-2 md:grid-rows-[auto_1fr] gap-x-4 gap-y-0 overflow-hidden p-4">
+
         <!-- 輸入區 -->
-        <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider" data-i18n="panels.markdownInput">
+        <div class="contents">
+            <div class="panel-header bg-gray-100 px-4 py-2 border border-gray-200 border-b-0 text-xs font-semibold text-gray-500 uppercase tracking-wider rounded-t-xl md:col-start-1 md:row-start-1" data-i18n="panels.markdownInput">
                 Markdown Input
             </div>
-            <textarea id="markdown-input" 
-                class="flex-1 p-6 focus:outline-none resize-none font-mono text-sm leading-relaxed" 
+            <textarea id="markdown-input"
+                class="mb-4 min-h-0 flex-1 resize-none border border-gray-200 bg-white p-6 font-mono text-sm leading-relaxed shadow-sm focus:outline-none rounded-b-xl md:col-start-1 md:mb-0 md:row-start-2"
                 placeholder="Type or paste Markdown content here..." data-i18n-attr="placeholder:editor.placeholder"></textarea>
         </div>
 
         <!-- 預覽區 -->
-        <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center justify-between gap-3">
+        <div class="contents">
+            <div class="panel-header bg-gray-100 px-4 py-2 border border-gray-200 border-b-0 text-xs font-semibold text-gray-500 uppercase tracking-wider rounded-t-xl flex justify-between gap-3 md:col-start-2 md:row-start-1">
                 <span data-i18n="panels.previewRichText">Live Preview (Rich Text)</span>
-                <div class="flex items-center gap-3 normal-case tracking-normal text-gray-600">
-                    <label class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center justify-end gap-3 normal-case tracking-normal text-gray-600">
+                    <button
+                        id="sop-settings-btn"
+                        type="button"
+                        class="flex items-center gap-1 border border-gray-300 rounded px-2 py-1 bg-white text-gray-700 hover:bg-gray-50 transition-colors"
+                        aria-haspopup="dialog"
+                        aria-controls="sop-settings-modal"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span data-i18n="controls.renderSettings">Render Settings</span>
+                    </button>
+                </div>
+            </div>
+            <div id="preview-area" class="min-h-0 flex-1 overflow-y-auto border border-gray-200 bg-white p-6 shadow-sm prose-sm max-w-none rounded-b-xl md:col-start-2 md:row-start-2">
+                <!-- 解析後的 HTML 會放在這裡 -->
+            </div>
+        </div>
+
+    </main>
+
+    <div id="sop-settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true" aria-labelledby="sop-settings-title">
+        <div class="w-full max-w-md rounded-xl bg-white shadow-xl border border-gray-200">
+            <div class="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+                <h2 id="sop-settings-title" class="text-base font-semibold text-gray-800" data-i18n="controls.renderSettingsTitle">Render Settings</h2>
+                <button id="sop-settings-close-icon" type="button" class="text-gray-400 hover:text-gray-600 transition-colors" data-i18n-attr="aria-label:controls.close" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 px-5 py-5">
+                <label class="flex flex-col gap-2 text-sm text-gray-700">
+                    <span data-i18n="controls.richTextFormat">Copy Rich Text Format</span>
+                    <select id="rich-text-format" class="border border-gray-300 rounded px-3 py-2 bg-white text-gray-700">
+                        <option value="sop" data-i18n="controls.richTextFormatSop">SOP Manual</option>
+                        <option value="plain" data-i18n="controls.richTextFormatPlain">Plain</option>
+                    </select>
+                </label>
+                <div class="flex flex-col gap-2 text-sm text-gray-700">
+                    <label class="flex flex-col gap-2">
                         <span data-i18n="editor.topHeadingLevel">Top Heading Level</span>
-                        <select id="top-heading-level" class="border border-gray-300 rounded px-2 py-1 bg-white text-gray-700">
+                        <select id="top-heading-level" class="border border-gray-300 rounded px-3 py-2 bg-white text-gray-700">
                             <option value="1">h1</option>
                             <option value="2" selected>h2</option>
                             <option value="3">h3</option>
@@ -100,33 +144,34 @@
                             <option value="6">h6</option>
                         </select>
                     </label>
-                    <label class="flex items-center gap-2">
-                        <span data-i18n="controls.richTextFormat">Copy Rich Text Format</span>
-                        <select id="rich-text-format" class="border border-gray-300 rounded px-2 py-1 bg-white text-gray-700">
-                            <option value="sop" data-i18n="controls.richTextFormatSop">SOP Manual</option>
-                            <option value="plain" data-i18n="controls.richTextFormatPlain">Plain</option>
-                        </select>
-                    </label>
-                    <label class="flex items-center gap-2">
-                        <span data-i18n="controls.tableStyle">Table Style</span>
-                        <select id="table-style" class="border border-gray-300 rounded px-2 py-1 bg-white text-gray-700">
-                            <option value="gray" data-i18n="controls.tableStyleGray">Gray</option>
-                            <option value="blue" data-i18n="controls.tableStyleBlue">Blue</option>
-                            <option value="yellow" data-i18n="controls.tableStyleYellow">Yellow</option>
-                            <option value="red" data-i18n="controls.tableStyleRed">Red</option>
-                            <option value="green" data-i18n="controls.tableStyleGreen">Green</option>
-                            <option value="purple" data-i18n="controls.tableStylePurple">Purple</option>
-                            <option value="brown" data-i18n="controls.tableStyleBrown">Brown</option>
-                        </select>
-                    </label>
+                    <p id="sop-top-heading-hint" class="text-xs text-gray-500" data-i18n="controls.sopTopHeadingHint">For SOP manuals, h2 is recommended as the top heading level.</p>
                 </div>
+                <div id="render-settings-sop-section" class="space-y-5">
+                <label class="flex flex-col gap-2 text-sm text-gray-700">
+                    <span data-i18n="controls.tableStyle">Table Style</span>
+                    <select id="table-style" class="border border-gray-300 rounded px-3 py-2 bg-white text-gray-700">
+                        <option value="gray" data-i18n="controls.tableStyleGray">Gray</option>
+                        <option value="blue" data-i18n="controls.tableStyleBlue">Blue</option>
+                        <option value="yellow" data-i18n="controls.tableStyleYellow">Yellow</option>
+                        <option value="red" data-i18n="controls.tableStyleRed">Red</option>
+                        <option value="green" data-i18n="controls.tableStyleGreen">Green</option>
+                        <option value="purple" data-i18n="controls.tableStylePurple">Purple</option>
+                        <option value="brown" data-i18n="controls.tableStyleBrown">Brown</option>
+                    </select>
+                </label>
+                </div>
+                <label class="flex items-start gap-3 text-sm text-gray-700">
+                    <input id="code-block-to-table" type="checkbox" class="mt-1 rounded border-gray-300">
+                    <span data-i18n="controls.codeBlockToTable">Convert code blocks to single-cell table</span>
+                </label>
             </div>
-            <div id="preview-area" class="flex-1 p-6 overflow-y-auto bg-white prose-sm max-w-none">
-                <!-- 解析後的 HTML 會放在這裡 -->
+            <div class="flex justify-end border-t border-gray-200 px-5 py-4">
+                <button id="sop-settings-close-btn" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors" data-i18n="controls.sopSettingsConfirm">
+                    Done
+                </button>
             </div>
         </div>
-
-    </main>
+    </div>
 
     <!-- 訊息提示盒 -->
     <div id="message-box" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 transition-opacity pointer-events-none z-50" data-i18n="toast.copiedToClipboard">

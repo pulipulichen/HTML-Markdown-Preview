@@ -1,3 +1,10 @@
+/* 兩欄標題列等高（md 以上與右欄控制項對齊） */
+.panel-header {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
 /* 自定義捲軸樣式 */
 ::-webkit-scrollbar {
     width: 8px;
