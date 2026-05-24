@@ -10,6 +10,7 @@
 - Added rich-text paste conversion for single-cell tables (1 row, 1 column) to fenced code blocks instead of GFM tables.
 - Added dedicated Playwright E2E coverage for Render Settings (modal open/close behavior, SOP/plain visibility toggles, persisted format selection, and code-block-to-table conversion behavior).
 - Added dedicated Playwright E2E coverage for Table Style rendering and persistence, including color-theme assertions in preview tables after style changes and page reload.
+- Added Markdown file drag-and-drop loading for the editor input (`.md` and `.markdown`), with drop-zone visual highlighting, localized success/error toasts, and `localStorage` synchronization after file load.
 
 ### Fixed
 
@@ -18,6 +19,7 @@
 - Fixed rich-text paste conversion for single-cell tables to preserve line breaks from block elements such as `<p>` and `<br>`, so multi-line terminal output stays intact inside code blocks.
 - Fixed single-cell code block table borders in preview and copy output to use each Table Style theme's dark border color instead of the default gray or black border.
 - Fixed Podman-based E2E report write failures (`EACCES` on `playwright-report`) by documenting and applying user-owned workspace/report directory permissions when running tests in rootless container workflows.
+- Fixed GitHub Actions Podman setup failures on `ubuntu-latest` caused by `apt` dependency conflicts (`crun`/`criu`) by installing Podman via `gacts/install-podman@v1` and installing `podman-compose` via `pip`.
 
 ### Improved
 
@@ -30,6 +32,7 @@
 - Renamed the project from `HTML-Markdown-Preview` to `HTML-Markdown-to-Rich-Text-Converter` across README titles/links and package metadata fields.
 - Split monolithic `e2e/basic.spec.js` into feature-focused spec files (`render-preview`, `render-settings`, `table-style`, `i18n`, and `pwa`) to improve test maintainability and reviewability.
 - Switched local and CI E2E orchestration from Docker Compose to Podman Compose (`package.json` and `.github/workflows/e2e.yml`), including CI setup for `podman` and `podman-compose`.
+- Refactored editor orchestration by splitting `scripts/script.js` into focused modules (`scripts/modules/editor/dom.js`, `preview-sync.js`, `actions.js`, and `drag-drop.js`) while keeping runtime behavior unchanged.
 
 ## 1.0.3
 

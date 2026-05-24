@@ -58,7 +58,10 @@ export const EN_TRANSLATIONS = {
         clipboardBlank: "Clipboard content is blank, nothing changed.",
         pasteAndCopied: "Rich text converted to Markdown in {mode} mode and copied!",
         pasteCopyFailed: "Rich text converted to Markdown in {mode} mode, but copy failed.",
-        clipboardPermissionDenied: "Unable to read clipboard. Please check browser permissions."
+        clipboardPermissionDenied: "Unable to read clipboard. Please check browser permissions.",
+        onlyMarkdownFileAllowed: "Only .md or .markdown files can be dropped.",
+        markdownFileLoaded: "Loaded Markdown file: {fileName}",
+        markdownFileReadFailed: "Failed to read the dropped Markdown file."
     },
     confirm: {
         clearAll: "Are you sure you want to clear all content?",

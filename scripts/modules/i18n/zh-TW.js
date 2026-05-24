@@ -58,7 +58,10 @@ export const ZH_TW_TRANSLATIONS = {
         clipboardBlank: "剪貼簿內容是空白，未更新內容。",
         pasteAndCopied: "富文本已以 {mode} 模式轉成 Markdown 並複製！",
         pasteCopyFailed: "富文本已以 {mode} 模式轉成 Markdown，但複製失敗。",
-        clipboardPermissionDenied: "無法讀取剪貼簿，請確認瀏覽器權限。"
+        clipboardPermissionDenied: "無法讀取剪貼簿，請確認瀏覽器權限。",
+        onlyMarkdownFileAllowed: "僅支援拖曳 .md 或 .markdown 檔案。",
+        markdownFileLoaded: "已載入 Markdown 檔案：{fileName}",
+        markdownFileReadFailed: "讀取拖曳的 Markdown 檔案失敗。"
     },
     confirm: {
         clearAll: "確定要清空所有內容嗎？",
