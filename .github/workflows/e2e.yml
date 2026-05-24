@@ -15,14 +15,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install Podman and compose provider
+    - uses: gacts/install-podman@v1
+    
+    - name: Run E2E tests with podman-compose
       run: |
-        sudo apt-get update
-        sudo apt-get install -y podman podman-compose
-
-    - name: Run E2E tests with Podman Compose
-      run: |
-        podman compose up --build --exit-code-from test-runner
+        podman-compose up --build --exit-code-from test-runner
 
     - name: Upload Playwright Report (Optional)
       if: failure()
