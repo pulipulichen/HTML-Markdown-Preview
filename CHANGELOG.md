@@ -24,6 +24,7 @@
 - Aligned the Markdown Input and Live Preview panel header bars to equal height on desktop by restructuring the main workspace with CSS Grid, so the left label row matches the taller right-side toolbar controls.
 - Improved rich-text paste sanitization to collapse consecutive empty lines (including whitespace-only lines) to a single blank line, while leaving blank lines inside fenced code blocks unchanged.
 - Improved rich-text paste HTML preprocessing to unwrap `<p>` and `<div>` block elements inside list items before Markdown conversion, producing compact bullet lists that match the source layout more closely.
+- Renamed the project from `HTML-Markdown-Preview` to `HTML-Markdown-to-Rich-Text-Converter` across README titles/links and package metadata fields.
 
 ## 1.0.3
 
