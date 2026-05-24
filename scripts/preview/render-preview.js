@@ -16,7 +16,7 @@ function updatePreview(
 }
 
 function normalizeHeadingLevels(container, topHeadingLevel) {
-    const headings = Array.from(container.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+    const headings = Array.from(container.querySelectorAll("h1, h2, h3, h4, h5, h6"));
     if (headings.length === 0) {
         return;
     }

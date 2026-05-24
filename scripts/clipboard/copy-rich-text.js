@@ -7,7 +7,7 @@ function copyRichText(previewArea) {
     selection.addRange(range);
 
     try {
-        const successful = document.execCommand('copy');
+        const successful = document.execCommand("copy");
         selection.removeAllRanges();
         return successful;
     } catch (err) {

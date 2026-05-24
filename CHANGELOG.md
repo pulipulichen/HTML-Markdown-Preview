@@ -15,10 +15,13 @@
 - Fixed Docker E2E failures caused by host `node_modules` shadowing Playwright in the container by adding an anonymous `/app/node_modules` volume in `docker-compose.yml`.
 - Fixed Playwright artifact/report path conflicts by removing `--output=/app/playwright-report-videos` from `Dockerfile.test` and using `outputDir: test-results` from `playwright.config.js`.
 - Fixed an invalid regular expression in `scripts/filter.js` (`/^\n=++\n$/`) that caused a runtime `SyntaxError`, replacing it with a multiline-safe rule for repeated `=` lines.
+- Fixed rich-text paste sanitization to remove wrapper lines when the first and last lines are standalone `**`, then apply final `trim()` before merge.
 
 ### Improved
 
 - Added `.jshintrc` lint configuration to allow no trailing semicolons (`asi: true`) and support modern JavaScript syntax used in this project.
+- Refactored `scripts/script.js` by extracting editor settings/loading and rich-text paste flow into `scripts/modules/editor/settings.js` and `scripts/modules/editor/paste.js`.
+- Reorganized legacy script files into purpose-based directories and clearer names (for example, `scripts/rich-text-to-markdown.js` to `scripts/converters/html-to-markdown-converter.js`) and updated script imports in `index.html`.
 
 ## 1.0.2
 

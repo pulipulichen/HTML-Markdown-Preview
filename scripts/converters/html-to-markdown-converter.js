@@ -81,10 +81,10 @@ window.setTableStyleTheme = setTableStyleTheme;
 
 function convertHtmlToMarkdown(html) {
     const turndownService = new TurndownService({
-        headingStyle: 'atx',
-        codeBlockStyle: 'fenced',
-        emDelimiter: '*',
-        bulletListMarker: '-'
+        headingStyle: "atx",
+        codeBlockStyle: "fenced",
+        emDelimiter: "*",
+        bulletListMarker: "-"
     });
 
     if (window.turndownPluginGfm) {
@@ -97,8 +97,8 @@ function convertHtmlToMarkdown(html) {
 }
 
 function addMarkdownTableRule(turndownService) {
-    turndownService.addRule('markdownTables', {
-        filter: 'table',
+    turndownService.addRule("markdownTables", {
+        filter: "table",
         replacement: (content, node) => {
             const markdownTable = convertTableNodeToMarkdown(node, turndownService);
             return `\n\n${markdownTable}\n\n`;
@@ -107,7 +107,7 @@ function addMarkdownTableRule(turndownService) {
 }
 
 function convertTableNodeToMarkdown(table, turndownService) {
-    if (table.querySelector('[rowspan], [colspan]')) {
+    if (table.querySelector("[rowspan], [colspan]")) {
         const tableClone = table.cloneNode(true);
         applyWordTableStyles(tableClone);
         return tableClone.outerHTML.trim();
@@ -118,49 +118,49 @@ function convertTableNodeToMarkdown(table, turndownService) {
         .filter(row => row.length > 0);
 
     if (rows.length === 0) {
-        return '';
+        return "";
     }
 
     const columnCount = Math.max(...rows.map(row => row.length));
     const normalizedRows = rows.map(row => padTableRow(row, columnCount));
     const headerRow = normalizedRows[0].map((cell, index) => cell || `欄位 ${index + 1}`);
-    const dividerRow = Array(columnCount).fill('---');
+    const dividerRow = Array(columnCount).fill("---");
     const bodyRows = normalizedRows.slice(1);
 
     return [headerRow, dividerRow, ...bodyRows]
-        .map(row => `| ${row.join(' | ')} |`)
-        .join('\n');
+        .map(row => `| ${row.join(" | ")} |`)
+        .join("\n");
 }
 
 function convertTableCellToMarkdown(cell, turndownService) {
     const cellClone = cell.cloneNode(true);
 
-    cellClone.querySelectorAll('br').forEach(br => {
-        br.replaceWith(document.createTextNode('<br>'));
+    cellClone.querySelectorAll("br").forEach(br => {
+        br.replaceWith(document.createTextNode("<br>"));
     });
 
     return turndownService.turndown(cellClone.innerHTML)
-        .replace(/\r?\n\s*\r?\n/g, '<br>')
-        .replace(/\r?\n/g, '<br>')
-        .replace(/\|/g, '\\|')
+        .replace(/\r?\n\s*\r?\n/g, "<br>")
+        .replace(/\r?\n/g, "<br>")
+        .replace(/\|/g, "\\|")
         .trim();
 }
 
 function padTableRow(row, columnCount) {
-    return row.concat(Array(Math.max(columnCount - row.length, 0)).fill(''));
+    return row.concat(Array(Math.max(columnCount - row.length, 0)).fill(""));
 }
 
 function applyWordTableStyles(container) {
-    const tables = container.matches?.('table') ? [container] : Array.from(container.querySelectorAll('table'));
+    const tables = container.matches?.("table") ? [container] : Array.from(container.querySelectorAll("table"));
     const tableStyle = getActiveTableStyle();
 
     tables.forEach(table => {
-        table.removeAttribute('style');
-        table.setAttribute('border', '1');
-        table.setAttribute('cellspacing', '0');
-        table.setAttribute('cellpadding', '6');
-        table.setAttribute('width', '100%');
-        table.setAttribute('bordercolor', tableStyle.borderColor);
+        table.removeAttribute("style");
+        table.setAttribute("border", "1");
+        table.setAttribute("cellspacing", "0");
+        table.setAttribute("cellpadding", "6");
+        table.setAttribute("width", "100%");
+        table.setAttribute("bordercolor", tableStyle.borderColor);
 
         Array.from(table.rows).forEach((row, rowIndex) => {
             const isHeaderRow = rowIndex === 0;
@@ -172,16 +172,16 @@ function applyWordTableStyles(container) {
                 backgroundColor = tableStyle.evenRowBackground;
             }
 
-            row.removeAttribute('style');
-            row.setAttribute('bgcolor', backgroundColor);
+            row.removeAttribute("style");
+            row.setAttribute("bgcolor", backgroundColor);
 
             Array.from(row.cells).forEach((cell, cellIndex) => {
-                const align = cell.getAttribute('align') || getStyleTextAlign(cell) || 'left';
+                const align = cell.getAttribute("align") || getStyleTextAlign(cell) || "left";
 
-                cell.removeAttribute('style');
-                cell.setAttribute('bgcolor', backgroundColor);
-                cell.setAttribute('align', align);
-                cell.setAttribute('valign', 'top');
+                cell.removeAttribute("style");
+                cell.setAttribute("bgcolor", backgroundColor);
+                cell.setAttribute("align", align);
+                cell.setAttribute("valign", "top");
 
                 if (isHeaderRow) {
                     wrapCellContent(cell, tableStyle.headerTextColor, true, true);
@@ -192,16 +192,16 @@ function applyWordTableStyles(container) {
             });
         });
 
-        table.querySelectorAll('[style]').forEach(element => {
-            element.removeAttribute('style');
+        table.querySelectorAll("[style]").forEach(element => {
+            element.removeAttribute("style");
         });
     });
 }
 
 function getStyleTextAlign(cell) {
-    const match = cell.getAttribute('style')?.match(/text-align\s*:\s*([^;]+)/i);
+    const match = cell.getAttribute("style")?.match(/text-align\s*:\s*([^;]+)/i);
 
-    return match ? match[1].trim() : '';
+    return match ? match[1].trim() : "";
 }
 
 function wrapCellContent(cell, color, isBold, isItalic) {
