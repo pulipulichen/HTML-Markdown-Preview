@@ -1,11 +1,11 @@
-# HTML-Markdown-Preview
+# HTML-Markdown-to-Rich-Text-Converter
 
 [English](./README.md) | [繁體中文](./README_zh_tw.md)
 
 即時將 Markdown 轉換為 HTML 富文本預覽的工具，支援富文本貼上轉 Markdown、富文本複製與雙語介面，協助你在撰寫時同步確認內容與排版。
 
-- **線上預覽**：[https://pulipulichen.github.io/HTML-Markdown-Preview/](https://pulipulichen.github.io/HTML-Markdown-Preview/)
-- **專案網址**：[https://github.com/pulipulichen/HTML-Markdown-Preview](https://github.com/pulipulichen/HTML-Markdown-Preview)
+- **線上預覽**：[https://pulipulichen.github.io/HTML-Markdown-to-Rich-Text-Converter/](https://pulipulichen.github.io/HTML-Markdown-to-Rich-Text-Converter/)
+- **專案網址**：[https://github.com/pulipulichen/HTML-Markdown-to-Rich-Text-Converter](https://github.com/pulipulichen/HTML-Markdown-to-Rich-Text-Converter)
 
 ## 主要功能
 

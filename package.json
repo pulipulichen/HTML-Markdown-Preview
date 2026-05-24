@@ -1,5 +1,5 @@
 {
-  "name": "html-markdown-preview",
+  "name": "html-markdown-to-rich-text-converter",
   "version": "1.0.0",
   "description": "A tool for real-time conversion and visualization of Markdown syntax into HTML preview.",
   "main": "sw.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pulipulichen/HTML-Markdown-Preview.git"
+    "url": "git+https://github.com/pulipulichen/HTML-Markdown-to-Rich-Text-Converter.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/pulipulichen/HTML-Markdown-Preview/issues"
+    "url": "https://github.com/pulipulichen/HTML-Markdown-to-Rich-Text-Converter/issues"
   },
-  "homepage": "https://github.com/pulipulichen/HTML-Markdown-Preview#readme",
+  "homepage": "https://github.com/pulipulichen/HTML-Markdown-to-Rich-Text-Converter#readme",
   "devDependencies": {
   }
 }

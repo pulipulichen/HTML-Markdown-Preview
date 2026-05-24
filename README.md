@@ -1,11 +1,11 @@
-# HTML-Markdown-Preview
+# HTML-Markdown-to-Rich-Text-Converter
 
 [English](./README.md) | [繁體中文](./README_zh_tw.md)
 
 A real-time Markdown-to-HTML rich preview tool with rich-text paste-to-Markdown conversion, rich-text copy, and a bilingual UI for faster writing and formatting validation.
 
-- **Live Preview**: [https://pulipulichen.github.io/HTML-Markdown-Preview/](https://pulipulichen.github.io/HTML-Markdown-Preview/)
-- **Repository**: [https://github.com/pulipulichen/HTML-Markdown-Preview](https://github.com/pulipulichen/HTML-Markdown-Preview)
+- **Live Preview**: [https://pulipulichen.github.io/HTML-Markdown-to-Rich-Text-Converter/](https://pulipulichen.github.io/HTML-Markdown-to-Rich-Text-Converter/)
+- **Repository**: [https://github.com/pulipulichen/HTML-Markdown-to-Rich-Text-Converter](https://github.com/pulipulichen/HTML-Markdown-to-Rich-Text-Converter)
 
 ## Key Features
 
