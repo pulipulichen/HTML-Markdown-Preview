@@ -15,12 +15,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Run E2E tests with Docker Compose
+    - name: Install Podman and compose provider
       run: |
-        docker compose up --build --exit-code-from test-runner
+        sudo apt-get update
+        sudo apt-get install -y podman podman-compose
+
+    - name: Run E2E tests with Podman Compose
+      run: |
+        podman compose up --build --exit-code-from test-runner
 
     - name: Upload Playwright Report (Optional)
       if: failure()

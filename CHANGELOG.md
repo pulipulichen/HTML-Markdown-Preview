@@ -17,6 +17,7 @@
 - Fixed rich-text paste conversion inserting blank lines between consecutive list items when source HTML wraps each `<li>` in a `<p>` or `<div>`, by unwrapping those block elements before Turndown runs and tightening leftover spacing in paste sanitization.
 - Fixed rich-text paste conversion for single-cell tables to preserve line breaks from block elements such as `<p>` and `<br>`, so multi-line terminal output stays intact inside code blocks.
 - Fixed single-cell code block table borders in preview and copy output to use each Table Style theme's dark border color instead of the default gray or black border.
+- Fixed Podman-based E2E report write failures (`EACCES` on `playwright-report`) by documenting and applying user-owned workspace/report directory permissions when running tests in rootless container workflows.
 
 ### Improved
 
@@ -28,6 +29,7 @@
 - Improved rich-text paste HTML preprocessing to unwrap `<p>` and `<div>` block elements inside list items before Markdown conversion, producing compact bullet lists that match the source layout more closely.
 - Renamed the project from `HTML-Markdown-Preview` to `HTML-Markdown-to-Rich-Text-Converter` across README titles/links and package metadata fields.
 - Split monolithic `e2e/basic.spec.js` into feature-focused spec files (`render-preview`, `render-settings`, `table-style`, `i18n`, and `pwa`) to improve test maintainability and reviewability.
+- Switched local and CI E2E orchestration from Docker Compose to Podman Compose (`package.json` and `.github/workflows/e2e.yml`), including CI setup for `podman` and `podman-compose`.
 
 ## 1.0.3
 

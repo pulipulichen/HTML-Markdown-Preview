@@ -4,7 +4,7 @@
   "description": "A tool for real-time conversion and visualization of Markdown syntax into HTML preview.",
   "main": "sw.js",
   "scripts": {
-    "start": "sudo docker compose up --build --exit-code-from test-runner"
+    "start": "podman compose up --build --exit-code-from test-runner"
   },
   "repository": {
     "type": "git",
