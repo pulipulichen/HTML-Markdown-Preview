@@ -15,8 +15,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+
     - uses: gacts/install-podman@v1
     
+    - name: Install Podman and compose provider
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y podman podman-compose
+
     - name: Run E2E tests with podman-compose
       run: |
         podman-compose up --build --exit-code-from test-runner
