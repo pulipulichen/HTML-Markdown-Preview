@@ -28,7 +28,7 @@ test('switches language and updates UI text immediately', async ({ page }) => {
 
   await page.locator('#language-select').selectOption('en');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.locator('#clear-btn')).toContainText('Clear Content');
+  await expect(page.locator('#clear-btn')).toContainText('Clear');
 
   expect(consoleErrors).toHaveLength(0);
 });

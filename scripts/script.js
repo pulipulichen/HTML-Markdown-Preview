@@ -69,6 +69,7 @@ bindEditorActions({
 
 bindMarkdownFileDrop({
     markdownInput: elements.markdownInput,
+    markdownDropOverlay: elements.markdownDropOverlay,
     t,
     updateEditorPreview,
     showEditorToast

@@ -1,26 +1,35 @@
 import { MARKDOWN_CONTENT_KEY } from "./settings.js";
 
-const DRAG_ACTIVE_CLASSES = ["ring-2", "ring-blue-400", "border-blue-400"];
+export function bindMarkdownFileDrop({ markdownInput, markdownDropOverlay, t, updateEditorPreview, showEditorToast }) {
+    const overlayController = createOverlayController(markdownDropOverlay);
 
-export function bindMarkdownFileDrop({ markdownInput, t, updateEditorPreview, showEditorToast }) {
-    ["dragenter", "dragover"].forEach(eventName => {
-        markdownInput.addEventListener(eventName, event => {
-            if (!hasFileInDataTransfer(event.dataTransfer)) return;
-            event.preventDefault();
-            markdownInput.classList.add(...DRAG_ACTIVE_CLASSES);
-        });
-    });
-
-    ["dragleave", "dragend", "drop"].forEach(eventName => {
-        markdownInput.addEventListener(eventName, () => {
-            markdownInput.classList.remove(...DRAG_ACTIVE_CLASSES);
-        });
-    });
-
-    markdownInput.addEventListener("drop", async event => {
+    document.addEventListener("dragenter", event => {
+        if (!hasFileInDataTransfer(event.dataTransfer)) return;
         event.preventDefault();
-        const markdownFile = extractMarkdownFile(event.dataTransfer);
+        overlayController.show();
+    });
 
+    document.addEventListener("dragover", event => {
+        if (!hasFileInDataTransfer(event.dataTransfer)) return;
+        event.preventDefault();
+        overlayController.show();
+    });
+
+    document.addEventListener("dragleave", event => {
+        if (!hasFileInDataTransfer(event.dataTransfer)) return;
+        if (event.relatedTarget !== null) return;
+        overlayController.hide();
+    });
+
+    window.addEventListener("dragend", overlayController.hide);
+    window.addEventListener("blur", overlayController.hide);
+
+    document.addEventListener("drop", async event => {
+        if (!hasFileInDataTransfer(event.dataTransfer)) return;
+        event.preventDefault();
+        overlayController.hide();
+
+        const markdownFile = extractMarkdownFile(event.dataTransfer);
         if (!markdownFile) {
             showEditorToast(t("toast.onlyMarkdownFileAllowed"));
             return;
@@ -36,13 +45,6 @@ export function bindMarkdownFileDrop({ markdownInput, t, updateEditorPreview, sh
             console.error("Failed to read dropped markdown file:", error);
             showEditorToast(t("toast.markdownFileReadFailed"));
         }
-    });
-
-    ["dragover", "drop"].forEach(eventName => {
-        document.addEventListener(eventName, event => {
-            if (!hasFileInDataTransfer(event.dataTransfer)) return;
-            event.preventDefault();
-        });
     });
 }
 
@@ -65,4 +67,38 @@ function extractMarkdownFile(dataTransfer) {
     }
 
     return null;
+}
+
+function createOverlayController(overlayElement) {
+    let hideTimerId = null;
+
+    function setOverlayVisible(isVisible) {
+        if (!overlayElement) return;
+        overlayElement.classList.toggle("hidden", !isVisible);
+        overlayElement.setAttribute("aria-hidden", isVisible ? "false" : "true");
+    }
+
+    function showOverlay() {
+        if (hideTimerId !== null) {
+            window.clearTimeout(hideTimerId);
+            hideTimerId = null;
+        }
+        setOverlayVisible(true);
+    }
+
+    function hideOverlayWithDebounce() {
+        if (hideTimerId !== null) {
+            window.clearTimeout(hideTimerId);
+        }
+
+        hideTimerId = window.setTimeout(() => {
+            setOverlayVisible(false);
+            hideTimerId = null;
+        }, 80);
+    }
+
+    return {
+        show: showOverlay,
+        hide: hideOverlayWithDebounce
+    };
 }

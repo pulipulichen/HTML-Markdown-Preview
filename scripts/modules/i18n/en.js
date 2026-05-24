@@ -10,9 +10,9 @@ export const EN_TRANSLATIONS = {
         label: "Language"
     },
     controls: {
-        clearContent: "Clear Content",
+        clearContent: "Clear",
         removeEmptyLines: "Remove Empty Lines",
-        loadDefaultMarkdown: "Load Default Markdown",
+        loadDefaultMarkdown: "Load Demo",
         pasteMode: "Rich Paste Mode",
         pasteModeReplace: "Replace",
         pasteModeAppend: "Append",
@@ -42,6 +42,10 @@ export const EN_TRANSLATIONS = {
     panels: {
         markdownInput: "Markdown Input",
         previewRichText: "Live Preview (Rich Text)"
+    },
+    overlay: {
+        dropMarkdownTitle: "Drop Markdown file to load",
+        dropMarkdownHint: "Supports .md and .markdown files"
     },
     editor: {
         placeholder: "Type or paste Markdown content here...",

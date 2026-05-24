@@ -18,6 +18,7 @@ export function getEditorElements() {
     const sopSettingsCloseIconBtn = document.getElementById("sop-settings-close-icon");
     const renderSettingsSopSection = document.getElementById("render-settings-sop-section");
     const sopTopHeadingHint = document.getElementById("sop-top-heading-hint");
+    const markdownDropOverlay = document.getElementById("markdown-drop-overlay");
 
     return {
         markdownInput,
@@ -37,6 +38,7 @@ export function getEditorElements() {
         sopSettingsModal,
         sopSettingsCloseBtn,
         sopSettingsCloseIconBtn,
+        markdownDropOverlay,
         renderSettingsElements: {
             sopSection: renderSettingsSopSection,
             sopTopHeadingHint

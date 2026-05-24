@@ -11,6 +11,7 @@
 - Added dedicated Playwright E2E coverage for Render Settings (modal open/close behavior, SOP/plain visibility toggles, persisted format selection, and code-block-to-table conversion behavior).
 - Added dedicated Playwright E2E coverage for Table Style rendering and persistence, including color-theme assertions in preview tables after style changes and page reload.
 - Added Markdown file drag-and-drop loading for the editor input (`.md` and `.markdown`), with drop-zone visual highlighting, localized success/error toasts, and `localStorage` synchronization after file load.
+- Added a full-screen drag-and-drop overlay with localized guidance text and document-wide drop handling, so users can drop supported Markdown files anywhere on the page.
 
 ### Fixed
 
@@ -23,6 +24,7 @@
 
 ### Improved
 
+- Updated the English toolbar labels from "Clear Content" to "Clear" and from "Load Default Markdown" to "Load Demo", and reordered the three editor action buttons to `Clear` → `Load Demo` → `Remove Empty Lines` while keeping the "Remove Empty Lines" wording unchanged.
 - Renamed SOP Settings to Render Settings and consolidated Copy Rich Text Format, Top Heading Level, Table Style, and code-block conversion into a single modal dialog.
 - Added an SOP-specific hint in Render Settings recommending h2 as the top heading level for SOP manuals.
 - Kept the code-block-to-table option available in both SOP Manual and Plain formats; only Table Style remains SOP-specific in the modal.

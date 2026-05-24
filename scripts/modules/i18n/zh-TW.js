@@ -43,6 +43,10 @@ export const ZH_TW_TRANSLATIONS = {
         markdownInput: "Markdown 輸入區",
         previewRichText: "即時預覽 (Rich Text)"
     },
+    overlay: {
+        dropMarkdownTitle: "放開滑鼠以載入 Markdown 檔案",
+        dropMarkdownHint: "支援 .md 與 .markdown 檔案"
+    },
     editor: {
         placeholder: "在此輸入或貼上 Markdown 內容...",
         topHeadingLevel: "最頂層標題"

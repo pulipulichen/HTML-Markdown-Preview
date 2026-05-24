@@ -36,13 +36,13 @@
         </div>
         <div class="flex gap-3">
             <button id="clear-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">
-                <span data-i18n="controls.clearContent">Clear Content</span>
+                <span data-i18n="controls.clearContent">Clear</span>
+            </button>
+            <button id="load-default-markdown-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+                <span data-i18n="controls.loadDefaultMarkdown">Load Demo</span>
             </button>
             <button id="remove-empty-lines-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-amber-600 transition-colors">
                 <span data-i18n="controls.removeEmptyLines">Remove Empty Lines</span>
-            </button>
-            <button id="load-default-markdown-btn" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-                <span data-i18n="controls.loadDefaultMarkdown">Load Default Markdown</span>
             </button>
             <label class="flex items-center gap-2 text-sm text-gray-600">
                 <span data-i18n="language.label">Language</span>
@@ -113,6 +113,13 @@
         </div>
 
     </main>
+
+    <div id="markdown-drop-overlay" class="markdown-drop-overlay hidden" aria-hidden="true">
+        <div class="markdown-drop-overlay__panel">
+            <p class="markdown-drop-overlay__title" data-i18n="overlay.dropMarkdownTitle">Drop Markdown file to load</p>
+            <p class="markdown-drop-overlay__hint" data-i18n="overlay.dropMarkdownHint">Supports .md and .markdown files</p>
+        </div>
+    </div>
 
     <div id="sop-settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true" aria-labelledby="sop-settings-title">
         <div class="w-full max-w-md rounded-xl bg-white shadow-xl border border-gray-200">
