@@ -8,6 +8,8 @@
 - Added an option to convert fenced code blocks into single-cell tables with plain styling (white background, black text, border color matching the selected Table Style in SOP mode or default black borders in Plain mode), persisted in `localStorage` (`code_block_to_table`).
 - Added a Render Settings modal for preview output options, opened from a gear button in the Live Preview toolbar.
 - Added rich-text paste conversion for single-cell tables (1 row, 1 column) to fenced code blocks instead of GFM tables.
+- Added dedicated Playwright E2E coverage for Render Settings (modal open/close behavior, SOP/plain visibility toggles, persisted format selection, and code-block-to-table conversion behavior).
+- Added dedicated Playwright E2E coverage for Table Style rendering and persistence, including color-theme assertions in preview tables after style changes and page reload.
 
 ### Fixed
 
@@ -25,6 +27,7 @@
 - Improved rich-text paste sanitization to collapse consecutive empty lines (including whitespace-only lines) to a single blank line, while leaving blank lines inside fenced code blocks unchanged.
 - Improved rich-text paste HTML preprocessing to unwrap `<p>` and `<div>` block elements inside list items before Markdown conversion, producing compact bullet lists that match the source layout more closely.
 - Renamed the project from `HTML-Markdown-Preview` to `HTML-Markdown-to-Rich-Text-Converter` across README titles/links and package metadata fields.
+- Split monolithic `e2e/basic.spec.js` into feature-focused spec files (`render-preview`, `render-settings`, `table-style`, `i18n`, and `pwa`) to improve test maintainability and reviewability.
 
 ## 1.0.3
 
